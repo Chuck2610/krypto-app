@@ -2,127 +2,95 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Registrieren – Krypto App</title>
-
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet" />
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Konto erstellen – KryptoApp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
-      color: #fff;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
     }
 
     .container {
-      background-color: rgba(0, 0, 0, 0.7);
-      padding: 40px;
-      border-radius: 16px;
-      width: 100%;
-      max-width: 400px;
-      box-shadow: 0 0 20px rgba(0,0,0,0.6);
+      background: #0e0e0e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+      width: 350px;
       text-align: center;
+      color: white;
     }
 
     .container h2 {
-      margin-bottom: 30px;
-      font-size: 28px;
+      margin-bottom: 20px;
     }
 
-    .input-group {
-      position: relative;
-      margin-bottom: 25px;
-    }
-
-    .input-group input {
+    input {
       width: 100%;
-      padding: 14px 16px 14px 45px;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
       border: none;
-      border-radius: 10px;
-      background-color: #1a1a1a;
-      color: #fff;
-      font-size: 16px;
-    }
-
-    .input-group i {
-      position: absolute;
-      top: 50%;
-      left: 15px;
-      transform: translateY(-50%);
-      color: #888;
+      background: #1c1c1c;
+      color: white;
     }
 
     button {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
+      background: #00e6b8;
+      color: black;
       border: none;
-      background-color: #00c896;
-      color: #fff;
-      font-size: 16px;
+      border-radius: 8px;
       font-weight: bold;
-      border-radius: 10px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
     }
 
     button:hover {
-      background-color: #00a37a;
+      background: #00bfa6;
     }
 
-    .footer-text {
-      margin-top: 20px;
-      font-size: 14px;
-    }
-
-    .footer-text a {
-      color: #00c896;
+    .link {
+      margin-top: 15px;
+      display: block;
+      color: #00e6b8;
       text-decoration: none;
     }
 
-    .footer-text a:hover {
-      text-decoration: underline;
+    .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
     }
-
   </style>
 </head>
 <body>
   <div class="container">
-    <h2><i class="fa-solid fa-coins"></i> Konto erstellen</h2>
-    <form id="registerForm">
-      <div class="input-group">
-        <i class="fa-solid fa-user"></i>
-        <input type="text" id="username" placeholder="Benutzername" required />
-      </div>
-      <div class="input-group">
-        <i class="fa-solid fa-lock"></i>
-        <input type="password" id="password" placeholder="Passwort" required />
-      </div>
-      <button type="submit">Registrieren</button>
-    </form>
-    <div class="footer-text">
-      Bereits registriert? <a href="login.html">Zum Login</a>
-    </div>
+    <div class="icon">💰</div>
+    <h2>Konto erstellen</h2>
+    <input type="text" id="username" placeholder="Benutzername" />
+    <input type="password" id="password" placeholder="Passwort" />
+    <button onclick="register()">Registrieren</button>
+    <a class="link" href="login.html">Schon registriert? Zum Login</a>
   </div>
 
   <script>
-    const form = document.getElementById('registerForm');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const username = document.getElementById('username').value;
-      const password = document.getElementById('password').value;
+    async function register() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        Swal.fire('Fehler', 'Bitte alle Felder ausfüllen.', 'warning');
+        return;
+      }
 
       try {
-        const response = await fetch('https://krypto-app-9h3q.onrender.com/api/register', {
+        const res = await fetch('https://krypto-app-9h3q.onrender.com/api/register', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
@@ -130,18 +98,18 @@
           body: JSON.stringify({ username, password })
         });
 
-        const result = await response.json();
-        if (response.ok) {
-          alert('Registrierung erfolgreich! Jetzt kannst du dich einloggen.');
-          window.location.href = 'login.html';
+        const data = await res.json();
+
+        if (res.ok) {
+          Swal.fire('Erfolgreich', 'Dein Account wurde erstellt!', 'success');
         } else {
-          alert(result.message || 'Registrierung fehlgeschlagen.');
+          Swal.fire('Fehler', data.message || 'Registrierung fehlgeschlagen.', 'error');
         }
-      } catch (error) {
-        alert('Verbindungsfehler. Bitte versuche es später erneut.');
-        console.error(error);
+      } catch (err) {
+        Swal.fire('Fehler', 'Server nicht erreichbar.', 'error');
+        console.error(err);
       }
-    });
+    }
   </script>
 </body>
 </html>
