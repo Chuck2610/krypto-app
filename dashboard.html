@@ -6,10 +6,7 @@
   <title>Krypto Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
+    * { box-sizing: border-box; }
     body {
       font-family: 'Inter', sans-serif;
       margin: 0;
@@ -31,24 +28,11 @@
       transition: transform 0.3s ease;
     }
 
-    .sidebar h2 {
-      color: #00e6b8;
-      margin-bottom: 30px;
-    }
-
-    .sidebar h3 {
-      margin: 20px 0 10px;
-      font-size: 16px;
-      color: #888;
-    }
-
+    .sidebar h2 { color: #00e6b8; margin-bottom: 30px; }
+    .sidebar h3 { margin: 20px 0 10px; font-size: 16px; color: #888; }
     .sidebar a {
-      color: white;
-      text-decoration: none;
-      margin: 6px 0;
-      padding: 8px;
-      border-radius: 6px;
-      display: block;
+      color: white; text-decoration: none; margin: 6px 0;
+      padding: 8px; border-radius: 6px; display: block;
       transition: background 0.3s;
     }
 
@@ -68,9 +52,7 @@
       cursor: pointer;
     }
 
-    .logout-btn:hover {
-      background-color: #00bfa6;
-    }
+    .logout-btn:hover { background-color: #00bfa6; }
 
     .main {
       margin-left: 250px;
@@ -93,26 +75,15 @@
     }
 
     @media (max-width: 768px) {
-      .sidebar {
-        transform: translateX(-100%);
-      }
-
-      .sidebar.open {
-        transform: translateX(0) !important;
-      }
-
-      .main {
-        margin-left: 0;
-        padding: 20px;
-      }
-
-      .menu-toggle {
-        display: block;
-      }
+      .sidebar { transform: translateX(-100%); }
+      .sidebar.open { transform: translateX(0) !important; }
+      .main { margin-left: 0; padding: 20px; }
+      .menu-toggle { display: block; }
     }
   </style>
 </head>
 <body>
+
   <button class="menu-toggle" onclick="toggleSidebar()">☰ Menü</button>
 
   <div class="sidebar" id="sidebar">
@@ -136,9 +107,33 @@
   <div class="main">
     <h1>Willkommen im Krypto Dashboard</h1>
     <p>Wähle ein Tool oder eine Übersicht aus.</p>
+
+    <h2>📊 Live Bitcoin Chart</h2>
+    <div style="margin-top: 20px;">
+      <div class="tradingview-widget-container">
+        <div id="tradingview_btc_chart"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+          new TradingView.widget({
+            "width": "100%",
+            "height": 500,
+            "symbol": "BINANCE:BTCUSDT",
+            "interval": "D",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "de",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "allow_symbol_change": true,
+            "container_id": "tradingview_btc_chart"
+          });
+        </script>
+      </div>
+    </div>
   </div>
 
-  <!-- TradingView Mini Ticker unten -->
+  <!-- TradingView Mini-Ticker unten -->
   <div class="tradingview-widget-container" style="position:fixed; bottom:0; width:100%; z-index:3000">
     <div class="tradingview-widget-container__widget"></div>
     <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
