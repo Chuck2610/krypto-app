@@ -8,34 +8,32 @@
   <style>
     * {
       box-sizing: border-box;
-      scroll-behavior: smooth;
     }
 
     body {
       font-family: 'Inter', sans-serif;
+      margin: 0;
       background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       color: white;
-      margin: 0;
     }
 
     .sidebar {
       width: 250px;
-      background: linear-gradient(to bottom, #0e0e0e, #1a1a1a);
-      padding: 40px 25px;
+      background: #111;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      padding: 30px 20px;
       display: flex;
       flex-direction: column;
-      position: fixed;
-      height: 100%;
-      left: 0;
-      top: 0;
       z-index: 1000;
-      transform: translateX(0);
       transition: transform 0.3s ease;
     }
 
     .sidebar h2 {
-      margin-bottom: 30px;
       color: #00e6b8;
+      margin-bottom: 30px;
     }
 
     .sidebar h3 {
@@ -47,11 +45,10 @@
     .sidebar a {
       color: white;
       text-decoration: none;
-      margin: 5px 0;
-      padding: 8px 12px;
-      display: block;
+      margin: 6px 0;
+      padding: 8px;
       border-radius: 6px;
-      font-size: 15px;
+      display: block;
       transition: background 0.3s;
     }
 
@@ -77,18 +74,14 @@
 
     .main {
       margin-left: 250px;
-      padding: 40px 50px;
-      background: rgba(255,255,255,0.03);
-      border-radius: 12px;
-      margin-top: 30px;
-      margin-right: 30px;
+      padding: 40px;
     }
 
     .menu-toggle {
       display: none;
-      position: absolute;
-      top: 20px;
-      left: 20px;
+      position: fixed;
+      top: 15px;
+      left: 15px;
       z-index: 1100;
       background: #00e6b8;
       color: black;
@@ -105,7 +98,7 @@
       }
 
       .sidebar.open {
-        transform: translateX(0);
+        transform: translateX(0) !important;
       }
 
       .main {
@@ -116,31 +109,6 @@
       .menu-toggle {
         display: block;
       }
-    }
-
-    #crypto-prices {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: #000;
-      color: #00e6b8;
-      padding: 10px;
-      white-space: nowrap;
-      overflow: hidden;
-      z-index: 2000;
-      font-size: 16px;
-    }
-
-    #crypto-prices span {
-      display: inline-block;
-      padding-left: 100%;
-      animation: ticker-scroll 30s linear infinite;
-    }
-
-    @keyframes ticker-scroll {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(-100%); }
     }
   </style>
 </head>
@@ -168,33 +136,27 @@
   <div class="main">
     <h1>Willkommen im Krypto Dashboard</h1>
     <p>Wähle ein Tool oder eine Übersicht aus.</p>
-
-    <h2>📊 Bitcoin Chart</h2>
-    <div class="chart-container" style="margin-top: 30px; background:#1c1c1c; padding: 20px; border-radius: 12px;">
-      <div class="tradingview-widget-container">
-        <div id="tradingview_btc_chart"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-        <script type="text/javascript">
-          new TradingView.widget({
-            "width": "100%",
-            "height": 500,
-            "symbol": "BINANCE:BTCUSDT",
-            "interval": "D",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "1",
-            "locale": "de",
-            "toolbar_bg": "#f1f3f6",
-            "enable_publishing": false,
-            "allow_symbol_change": true,
-            "container_id": "tradingview_btc_chart"
-          });
-        </script>
-      </div>
-    </div>
   </div>
 
-  <div id="crypto-prices"><span>📊 Kurse werden geladen...</span></div>
+  <!-- TradingView Mini Ticker unten -->
+  <div class="tradingview-widget-container" style="position:fixed; bottom:0; width:100%; z-index:3000">
+    <div class="tradingview-widget-container__widget"></div>
+    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
+    {
+      "symbols": [
+        { "proName": "BINANCE:BTCUSDT", "title": "BTC/USDT" },
+        { "proName": "BINANCE:ETHUSDT", "title": "ETH/USDT" },
+        { "proName": "BINANCE:SOLUSDT", "title": "SOL/USDT" },
+        { "proName": "BINANCE:DOGEUSDT", "title": "DOGE/USDT" },
+        { "proName": "BINANCE:ADAUSDT", "title": "ADA/USDT" }
+      ],
+      "colorTheme": "dark",
+      "isTransparent": false,
+      "displayMode": "regular",
+      "locale": "de"
+    }
+    </script>
+  </div>
 
   <script>
     function logout() {
@@ -205,33 +167,6 @@
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('open');
     }
-
-    async function fetchPrices() {
-      try {
-        const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,cardano,solana,binancecoin,dogecoin,polygon,polkadot,avalanche-2&vs_currencies=usdt';
-        const res = await fetch(url);
-        const data = await res.json();
-        const text = `
-          BTC: $${data.bitcoin.usdt} |
-          ETH: $${data.ethereum.usdt} |
-          XRP: $${data.ripple.usdt} |
-          ADA: $${data.cardano.usdt} |
-          SOL: $${data.solana.usdt} |
-          BNB: $${data.binancecoin.usdt} |
-          DOGE: $${data.dogecoin.usdt} |
-          MATIC: $${data.polygon.usdt} |
-          DOT: $${data.polkadot.usdt} |
-          AVAX: $${data["avalanche-2"].usdt}
-        `;
-        document.getElementById('crypto-prices').innerHTML = `<span>${text}</span>`;
-      } catch (err) {
-        document.getElementById('crypto-prices').innerHTML = "<span>⚠️ Kurse nicht verfügbar</span>";
-        console.error('Fehler beim Abrufen der Preise:', err);
-      }
-    }
-
-    fetchPrices();
-    setInterval(fetchPrices, 30000);
   </script>
 </body>
 </html>
