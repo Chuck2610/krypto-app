@@ -17,7 +17,6 @@
       background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       color: white;
       display: flex;
-      flex-direction: column;
     }
 
     .sidebar {
@@ -30,11 +29,7 @@
       height: 100%;
       left: 0;
       top: 0;
-      transition: transform 0.3s ease;
-    }
-
-    .sidebar.closed {
-      transform: translateX(-100%);
+      z-index: 1000;
     }
 
     .sidebar h2 {
@@ -63,12 +58,6 @@
       color: black;
     }
 
-    .main {
-      margin-left: 250px;
-      padding: 40px;
-      transition: margin-left 0.3s;
-    }
-
     .logout-btn {
       margin-top: auto;
       padding: 10px;
@@ -84,12 +73,18 @@
       background-color: #00bfa6;
     }
 
+    .main {
+      margin-left: 250px;
+      padding: 40px;
+      flex: 1;
+    }
+
     .menu-toggle {
       display: none;
       position: absolute;
       top: 20px;
       left: 20px;
-      z-index: 10;
+      z-index: 1100;
       background: #00e6b8;
       color: black;
       border: none;
@@ -102,7 +97,7 @@
     @media (max-width: 768px) {
       .sidebar {
         transform: translateX(-100%);
-        z-index: 5;
+        transition: transform 0.3s ease;
       }
 
       .sidebar.open {
@@ -123,7 +118,7 @@
 <body>
   <button class="menu-toggle" onclick="toggleSidebar()">☰ Menü</button>
 
-  <div class="sidebar closed" id="sidebar">
+  <div class="sidebar" id="sidebar">
     <h2>🔗 KryptoApp</h2>
 
     <h3>Math Tools</h3>
@@ -157,7 +152,6 @@
     function toggleSidebar() {
       const sidebar = document.getElementById('sidebar');
       sidebar.classList.toggle('open');
-      sidebar.classList.toggle('closed');
     }
   </script>
 </body>
