@@ -4,26 +4,68 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Dashboard – KryptoApp</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <style>
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: #0e0e0e;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       color: white;
       display: flex;
-      flex-direction: column;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       height: 100vh;
     }
 
+    .container {
+      background-color: #0e0e0e;
+      padding: 30px;
+      border-radius: 12px;
+      text-align: center;
+      width: 90%;
+      max-width: 400px;
+      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+    }
+
     h1 {
-      color: #00e6b8;
+      margin-bottom: 20px;
+    }
+
+    .logout-btn {
+      margin-top: 30px;
+      padding: 12px 20px;
+      background-color: #00e6b8;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .logout-btn:hover {
+      background-color: #00bfa6;
+    }
+
+    .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
-  <h1>Willkommen im Dashboard</h1>
-  <p>Du bist erfolgreich eingeloggt 🎉</p>
+  <div class="container">
+    <div class="icon">📊</div>
+    <h1>Willkommen im Dashboard</h1>
+    <p>Hier siehst du deine Krypto-Daten oder Analysen.</p>
+
+    <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <script>
+    function logout() {
+      window.location.href = "login.html";
+    }
+  </script>
 </body>
 </html>
