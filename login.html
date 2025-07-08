@@ -1,3 +1,7 @@
+# Wir speichern den optimierten login.html Code als Datei für den Download
+login_html_path = "/mnt/data/login-mobil-und-desktop.html"
+
+login_html_code = """
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -7,6 +11,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
@@ -15,6 +23,7 @@
       justify-content: center;
       align-items: center;
       height: 100vh;
+      padding: 20px;
     }
 
     .container {
@@ -22,7 +31,8 @@
       padding: 30px;
       border-radius: 12px;
       box-shadow: 0 0 20px rgba(0,255,255,0.1);
-      width: 350px;
+      width: 100%;
+      max-width: 360px;
       text-align: center;
       color: white;
     }
@@ -39,16 +49,19 @@
       border: none;
       background: #1c1c1c;
       color: white;
+      font-size: 16px;
     }
 
     button {
       width: 100%;
       padding: 12px;
+      margin-top: 15px;
       background: #00e6b8;
       color: black;
       border: none;
       border-radius: 8px;
       font-weight: bold;
+      font-size: 16px;
       cursor: pointer;
     }
 
@@ -59,6 +72,15 @@
     .icon {
       font-size: 40px;
       margin-bottom: 10px;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 25px 20px;
+      }
+      input, button {
+        font-size: 15px;
+      }
     }
   </style>
 </head>
@@ -76,13 +98,12 @@
       const username = document.getElementById('username').value.trim();
       const password = document.getElementById('password').value.trim();
 
-      // Festgelegte Zugangsdaten
       const CORRECT_USERNAME = "admin";
       const CORRECT_PASSWORD = "geheim123";
 
       if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
         Swal.fire('Erfolgreich', 'Login erfolgreich!', 'success').then(() => {
-          window.location.href = "dashboard.html"; // Zielseite nach Login
+          window.location.href = "dashboard.html";
         });
       } else {
         Swal.fire('Fehler', 'Benutzername oder Passwort falsch.', 'error');
@@ -91,3 +112,9 @@
   </script>
 </body>
 </html>
+"""
+
+with open(login_html_path, "w", encoding="utf-8") as f:
+    f.write(login_html_code)
+
+login_html_path
