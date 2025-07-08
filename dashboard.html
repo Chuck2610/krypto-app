@@ -3,63 +3,112 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Dashboard – KryptoApp</title>
+  <title>Krypto Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <style>
-    body {
+    * {
       margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
       font-family: 'Inter', sans-serif;
+      display: flex;
+      height: 100vh;
       background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       color: white;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #111;
+      padding: 30px 20px;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+      flex-direction: column;
     }
 
-    .container {
-      background-color: #0e0e0e;
-      padding: 30px;
-      border-radius: 12px;
-      text-align: center;
-      width: 90%;
-      max-width: 400px;
-      box-shadow: 0 0 20px rgba(0,255,255,0.1);
+    .sidebar h2 {
+      margin-bottom: 30px;
+      color: #00e6b8;
     }
 
-    h1 {
-      margin-bottom: 20px;
+    .sidebar h3 {
+      margin: 20px 0 10px;
+      font-size: 16px;
+      color: #888;
+    }
+
+    .sidebar a {
+      color: white;
+      text-decoration: none;
+      margin: 5px 0;
+      padding: 8px 12px;
+      display: block;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .sidebar a:hover {
+      background-color: #00e6b8;
+      color: black;
+    }
+
+    .main {
+      flex-grow: 1;
+      padding: 40px;
     }
 
     .logout-btn {
-      margin-top: 30px;
-      padding: 12px 20px;
+      margin-top: auto;
+      padding: 10px;
       background-color: #00e6b8;
       color: black;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       font-weight: bold;
       cursor: pointer;
-      transition: background-color 0.3s;
     }
 
     .logout-btn:hover {
       background-color: #00bfa6;
     }
 
-    .icon {
-      font-size: 40px;
-      margin-bottom: 10px;
+    @media (max-width: 768px) {
+      .sidebar {
+        display: none;
+      }
+      .main {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="icon">📊</div>
-    <h1>Willkommen im Dashboard</h1>
-    <p>Hier siehst du deine Krypto-Daten oder Analysen.</p>
+  <div class="sidebar">
+    <h2>🔗 KryptoApp</h2>
+
+    <h3>Math Tools</h3>
+    <a href="compound.html">📈 Compound Calculator</a>
+    <a href="trailing-profit.html">💹 Trailing Stop in Profit</a>
+    <a href="trailing-direct.html">📉 Trailing Stop direct</a>
+
+    <h3>External Accounts</h3>
+    <a href="steffi.html">👤 Steffi</a>
+    <a href="uli.html">👤 Uli</a>
+
+    <h3>Overview</h3>
+    <a href="income.html">💰 Income Overview</a>
+
+    <h3>Links</h3>
+    <a href="links.html">🔗 Wichtige Links</a>
 
     <button class="logout-btn" onclick="logout()">Logout</button>
+  </div>
+
+  <div class="main">
+    <h1>Willkommen im Krypto Dashboard</h1>
+    <p>Wähle im Menü eine Funktion aus. Dieses Dashboard kannst du jederzeit erweitern.</p>
   </div>
 
   <script>
