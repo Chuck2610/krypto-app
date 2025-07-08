@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Trailing Stop Rechner</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      padding: 40px;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      color: white;
+    }
+
+    h1 {
+      color: #00e6b8;
+      margin-bottom: 30px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    label {
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #1c1c1c;
+      color: white;
+    }
+
+    button {
+      margin-top: 30px;
+      padding: 12px 24px;
+      background-color: #00e6b8;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    button:hover {
+      background-color: #00bfa6;
+    }
+
+    .result {
+      margin-top: 30px;
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #00e6b8;
+    }
+
+    .highlight {
+      color: #00e6b8;
+      font-weight: bold;
+      font-size: 1.4em;
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+      display: inline-block;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.08); opacity: 0.85; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+  <h1>🎯 Trailing Stop Rechner</h1>
+
+  <div class="grid">
+    <div>
+      <label for="entryPrice">Break Even</label>
+      <input id="entryPrice" placeholder="z. B. 100" step="0.01" type="number" />
+    </div>
+    <div>
+      <label for="leverage">Hebel</label>
+      <input id="leverage" placeholder="z. B. 10" step="0.1" type="number" />
+    </div>
+    <div>
+      <label for="profitPercent">Ziel-Gewinn in % (mit Hebel)</label>
+      <input id="profitPercent" placeholder="z. B. 20" step="0.1" type="number" />
+    </div>
+    <div>
+      <label for="trailingOfProfit">Callback Rate (%)</label>
+      <input id="trailingOfProfit" placeholder="z. B. 30" step="0.1" type="number" />
+    </div>
+    <div style="grid-column: span 2;">
+      <label for="direction">Trade-Richtung</label>
+      <select id="direction">
+        <option value="long">Long</option>
+        <option value="short">Short</option>
+      </select>
+    </div>
+  </div>
+
+  <button onclick="calculate()">🧮 Berechnen</button>
+
+  <div class="result" id="output"></div>
+
+  <script>
+    function calculate() {
+      const entry = parseFloat(document.getElementById('entryPrice').value);
+      const leverage = parseFloat(document.getElementById('leverage').value);
+      const profitPercent = parseFloat(document.getElementById('profitPercent').value);
+      const trailingPercent = parseFloat(document.getElementById('trailingOfProfit').value);
+      const direction = document.getElementById('direction').value;
+
+      if ([entry, leverage, profitPercent, trailingPercent].some(isNaN) || leverage === 0) {
+        document.getElementById('output').innerHTML =
+          "<span style='color: #f87171;'>Bitte alle Felder korrekt ausfüllen.</span>";
+        return;
+      }
+
+      const realMovePercent = profitPercent / leverage;
+      const trailingStopPercent = realMovePercent * (trailingPercent / 100);
+      const priceMove = entry * (realMovePercent / 100);
+      const trailingDistance = entry * (trailingStopPercent / 100);
+
+      let targetPrice, trailingStopPrice;
+
+      if (direction === 'long') {
+        targetPrice = entry + priceMove;
+        trailingStopPrice = targetPrice - trailingDistance;
+      } else {
+        targetPrice = entry - priceMove;
+        trailingStopPrice = targetPrice + trailingDistance;
+      }
+
+      document.getElementById('output').innerHTML = `
+        <div>
+          <strong>📈 Richtung:</strong> ${direction.toUpperCase()}<br>
+          <strong>🎯 Zielpreis:</strong> <span class="highlight pulse">${targetPrice.toFixed(4)}</span><br>
+          <strong>🛡️ Trailing Stop:</strong> <span class="highlight">${trailingStopPrice.toFixed(4)}</span><br><br>
+          <strong>📉 Reale Bewegung (ohne Hebel):</strong> ${realMovePercent.toFixed(5)} %<br>
+          <strong>💡 Callback Rate vom Einstieg:</strong> <span class="highlight pulse">${trailingStopPercent.toFixed(5)} %</span>
+        </div>
+      `;
+    }
+  </script>
+</body>
+</html>
