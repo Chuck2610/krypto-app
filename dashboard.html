@@ -14,10 +14,10 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      display: flex;
-      height: 100vh;
       background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       color: white;
+      display: flex;
+      flex-direction: column;
     }
 
     .sidebar {
@@ -26,6 +26,15 @@
       padding: 30px 20px;
       display: flex;
       flex-direction: column;
+      position: fixed;
+      height: 100%;
+      left: 0;
+      top: 0;
+      transition: transform 0.3s ease;
+    }
+
+    .sidebar.closed {
+      transform: translateX(-100%);
     }
 
     .sidebar h2 {
@@ -55,8 +64,9 @@
     }
 
     .main {
-      flex-grow: 1;
+      margin-left: 250px;
       padding: 40px;
+      transition: margin-left 0.3s;
     }
 
     .logout-btn {
@@ -74,18 +84,46 @@
       background-color: #00bfa6;
     }
 
+    .menu-toggle {
+      display: none;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      z-index: 10;
+      background: #00e6b8;
+      color: black;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     @media (max-width: 768px) {
       .sidebar {
-        display: none;
+        transform: translateX(-100%);
+        z-index: 5;
       }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
       .main {
+        margin-left: 0;
         padding: 20px;
+      }
+
+      .menu-toggle {
+        display: block;
       }
     }
   </style>
 </head>
 <body>
-  <div class="sidebar">
+  <button class="menu-toggle" onclick="toggleSidebar()">☰ Menü</button>
+
+  <div class="sidebar closed" id="sidebar">
     <h2>🔗 KryptoApp</h2>
 
     <h3>Math Tools</h3>
@@ -114,6 +152,12 @@
   <script>
     function logout() {
       window.location.href = "login.html";
+    }
+
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
+      sidebar.classList.toggle('closed');
     }
   </script>
 </body>
