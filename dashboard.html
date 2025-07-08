@@ -6,17 +6,14 @@
   <title>Krypto Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       color: white;
       display: flex;
+      margin: 0;
     }
 
     .sidebar {
@@ -113,6 +110,32 @@
         display: block;
       }
     }
+
+    /* ✅ Ticker Styles */
+    #crypto-prices {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: #000;
+      color: #00e6b8;
+      padding: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      z-index: 2000;
+      font-size: 16px;
+    }
+
+    #crypto-prices span {
+      display: inline-block;
+      padding-left: 100%;
+      animation: ticker-scroll 30s linear infinite;
+    }
+
+    @keyframes ticker-scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-100%); }
+    }
   </style>
 </head>
 <body>
@@ -120,29 +143,29 @@
 
   <div class="sidebar" id="sidebar">
     <h2>🔗 KryptoApp</h2>
-
     <h3>Math Tools</h3>
-    <a href="compound.html">📈 Compound Calculator</a>
-    <a href="trailing-profit.html">💹 Trailing Stop in Profit</a>
-    <a href="trailing-direct.html">📉 Trailing Stop direct</a>
+    <a href="#">📈 Compound Calculator</a>
+    <a href="#">💹 Trailing Stop in Profit</a>
+    <a href="#">📉 Trailing Stop direct</a>
 
     <h3>External Accounts</h3>
-    <a href="steffi.html">👤 Steffi</a>
-    <a href="uli.html">👤 Uli</a>
+    <a href="#">👤 Steffi</a>
+    <a href="#">👤 Uli</a>
 
     <h3>Overview</h3>
-    <a href="income.html">💰 Income Overview</a>
-
-    <h3>Links</h3>
-    <a href="links.html">🔗 Wichtige Links</a>
+    <a href="#">💰 Income Overview</a>
+    <a href="#">🔗 Links</a>
 
     <button class="logout-btn" onclick="logout()">Logout</button>
   </div>
 
   <div class="main">
     <h1>Willkommen im Krypto Dashboard</h1>
-    <p>Wähle im Menü eine Funktion aus. Dieses Dashboard kannst du jederzeit erweitern.</p>
+    <p>Wähle ein Tool oder eine Übersicht aus.</p>
   </div>
+
+  <!-- ✅ Ticker -->
+  <div id="crypto-prices"><span>📊 Kurse werden geladen...</span></div>
 
   <script>
     function logout() {
@@ -150,9 +173,34 @@
     }
 
     function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('open');
+      document.getElementById('sidebar').classList.toggle('open');
     }
+
+    async function fetchPrices() {
+      try {
+        const url = 'https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,ripple,cardano,solana,binancecoin,dogecoin,polygon,polkadot,avalanche-2&vs_currencies=usdt';
+        const res = await fetch(url);
+        const data = await res.json();
+        const text = `
+          BTC: $${data.bitcoin.usdt} | 
+          ETH: $${data.ethereum.usdt} | 
+          XRP: $${data.ripple.usdt} | 
+          ADA: $${data.cardano.usdt} | 
+          SOL: $${data.solana.usdt} | 
+          BNB: $${data.binancecoin.usdt} | 
+          DOGE: $${data.dogecoin.usdt} | 
+          MATIC: $${data.polygon.usdt} | 
+          DOT: $${data.polkadot.usdt} | 
+          AVAX: $${data["avalanche-2"].usdt}
+        `;
+        document.getElementById('crypto-prices').innerHTML = `<span>${text}</span>`;
+      } catch (err) {
+        document.getElementById('crypto-prices').innerHTML = "<span>⚠️ Kurse nicht verfügbar</span>";
+      }
+    }
+
+    fetchPrices();
+    setInterval(fetchPrices, 30000);
   </script>
 </body>
 </html>
