@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <title>Krypto Gewinnrechner</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #141e30, #243b55);
+      color: #f0f0f0;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      background-color: #1f2937;
+      border-radius: 16px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      padding: 30px;
+      max-width: 400px;
+      width: 100%;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.6rem;
+    }
+    label {
+      margin-top: 15px;
+      font-weight: bold;
+      display: block;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background: #10b981;
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    button:hover {
+      background: #059669;
+    }
+    .result {
+      margin-top: 25px;
+      background: #111827;
+      padding: 15px;
+      border-radius: 12px;
+      font-weight: bold;
+      white-space: pre-line;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Krypto Gewinnrechner</h1>
+
+    <label for="startPreis">Startpreis des Assets (USDT):</label>
+    <input type="number" id="startPreis" value="100000">
+
+    <label for="einsatz">Einsatz (USDT):</label>
+    <input type="number" id="einsatz" value="100">
+
+    <label for="hebel">Hebel:</label>
+    <input type="number" id="hebel" value="125">
+
+    <label for="gewinn">Gewinnziel (% vom Einsatz):</label>
+    <input type="number" id="gewinn" value="300">
+
+    <button onclick="berechneKursziel()">Berechne Kursanstieg</button>
+
+    <div class="result" id="ergebnis"></div>
+  </div>
+
+  <script>
+    function berechneKursziel() {
+      const startPreis = parseFloat(document.getElementById("startPreis").value);
+      const einsatz = parseFloat(document.getElementById("einsatz").value);
+      const hebel = parseFloat(document.getElementById("hebel").value);
+      const gewinn = parseFloat(document.getElementById("gewinn").value);
+
+      const positionSize = einsatz * hebel;
+      const zielProzent = gewinn / positionSize * 100;
+      const gebuehren = 0.12; // in %
+      const gesamtProzent = zielProzent + gebuehren;
+      const kursAnstieg = startPreis * (gesamtProzent / 100);
+      const neuerKurs = startPreis + kursAnstieg;
+
+      document.getElementById("ergebnis").innerText =
+        `📈 Kurs muss steigen um: ${gesamtProzent.toFixed(2)} %\n` +
+        `💰 Neuer Kurs: ca. ${neuerKurs.toFixed(2)} USDT\n` +
+        `📉 Enthaltene Gebühren: ${gebuehren.toFixed(2)} %`;
+    }
+  </script>
+</body>
+</html>
