@@ -2,92 +2,130 @@
 <html lang="de">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Krypto Gewinnrechner</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #141e30, #243b55);
-      color: #f0f0f0;
-      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #0f1117;
+      color: #fff;
       padding: 20px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      min-height: 100vh;
     }
-    .container {
-      background-color: #1f2937;
-      border-radius: 16px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
-      padding: 30px;
-      max-width: 400px;
-      width: 100%;
-    }
+
     h1 {
       text-align: center;
-      margin-bottom: 20px;
-      font-size: 1.6rem;
+      color: #00ffc3;
+      margin-bottom: 30px;
     }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #1c1e26;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,255,200,0.05);
+    }
+
     label {
       margin-top: 15px;
-      font-weight: bold;
       display: block;
+      font-size: 15px;
+      color: #ccc;
     }
+
     input {
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      border: none;
-      border-radius: 8px;
-      font-size: 1rem;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 16px;
     }
+
     button {
+      margin-top: 20px;
       width: 100%;
       padding: 12px;
-      margin-top: 20px;
-      background: #10b981;
+      background: #00ffc3;
       border: none;
-      border-radius: 12px;
-      color: white;
-      font-size: 1rem;
+      color: #000;
+      font-size: 16px;
       font-weight: bold;
+      border-radius: 6px;
       cursor: pointer;
-      transition: background 0.3s ease;
     }
+
     button:hover {
-      background: #059669;
+      background: #00c2a9;
     }
+
     .result {
       margin-top: 25px;
-      background: #111827;
+      background: #0e1015;
       padding: 15px;
-      border-radius: 12px;
-      font-weight: bold;
+      border-left: 4px solid #00ffc3;
       white-space: pre-line;
+      font-size: 16px;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #00ffc3;
+      font-size: 15px;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+      .container {
+        padding: 20px;
+      }
+      input, button {
+        font-size: 15px;
+      }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Krypto Gewinnrechner</h1>
 
-    <label for="startPreis">Startpreis des Assets (USDT):</label>
+  <h1>📈 Krypto Gewinnrechner</h1>
+
+  <div class="container">
+    <label for="startPreis">📍 Startpreis des Assets (USDT):</label>
     <input type="number" id="startPreis" value="100000">
 
-    <label for="einsatz">Einsatz (USDT):</label>
+    <label for="einsatz">💵 Einsatz (USDT):</label>
     <input type="number" id="einsatz" value="100">
 
-    <label for="hebel">Hebel:</label>
+    <label for="hebel">🧮 Hebel:</label>
     <input type="number" id="hebel" value="125">
 
-    <label for="gewinn">Gewinnziel (% vom Einsatz):</label>
+    <label for="gewinn">🎯 Gewinnziel (% vom Einsatz):</label>
     <input type="number" id="gewinn" value="300">
 
-    <button onclick="berechneKursziel()">Berechne Kursanstieg</button>
+    <button onclick="berechneKursziel()">Kursziel berechnen</button>
 
     <div class="result" id="ergebnis"></div>
+    <a class="back" href="dashboard.html">⬅️ Zurück zum Dashboard</a>
   </div>
+
+  <footer>
+    © 2025 Tim Finkbeiner – All rights reserved.
+  </footer>
 
   <script>
     function berechneKursziel() {
@@ -104,10 +142,11 @@
       const neuerKurs = startPreis + kursAnstieg;
 
       document.getElementById("ergebnis").innerText =
-        `📈 Kurs muss steigen um: ${gesamtProzent.toFixed(2)} %\n` +
-        `💰 Neuer Kurs: ca. ${neuerKurs.toFixed(2)} USDT\n` +
-        `📉 Enthaltene Gebühren: ${gebuehren.toFixed(2)} %`;
+        `📊 Der Kurs muss um ca. ${gesamtProzent.toFixed(2)} % steigen\n` +
+        `📈 Zielkurs: ~ ${neuerKurs.toFixed(2)} USDT\n` +
+        `💸 Geschätzte Gebühren: ${gebuehren.toFixed(2)} %`;
     }
   </script>
+
 </body>
 </html>
