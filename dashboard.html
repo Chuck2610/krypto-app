@@ -6,20 +6,22 @@
   <title>Krypto Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <style>
-    * { box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      scroll-behavior: smooth;
+    }
 
     body {
       font-family: 'Inter', sans-serif;
       background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
       color: white;
-      display: flex;
       margin: 0;
     }
 
     .sidebar {
       width: 250px;
-      background-color: #111;
-      padding: 30px 20px;
+      background: linear-gradient(to bottom, #0e0e0e, #1a1a1a);
+      padding: 40px 25px;
       display: flex;
       flex-direction: column;
       position: fixed;
@@ -27,6 +29,8 @@
       left: 0;
       top: 0;
       z-index: 1000;
+      transform: translateX(0);
+      transition: transform 0.3s ease;
     }
 
     .sidebar h2 {
@@ -47,6 +51,7 @@
       padding: 8px 12px;
       display: block;
       border-radius: 6px;
+      font-size: 15px;
       transition: background 0.3s;
     }
 
@@ -72,8 +77,11 @@
 
     .main {
       margin-left: 250px;
-      padding: 40px;
-      flex: 1;
+      padding: 40px 50px;
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      margin-top: 30px;
+      margin-right: 30px;
     }
 
     .menu-toggle {
@@ -94,7 +102,6 @@
     @media (max-width: 768px) {
       .sidebar {
         transform: translateX(-100%);
-        transition: transform 0.3s ease;
       }
 
       .sidebar.open {
@@ -111,7 +118,6 @@
       }
     }
 
-    /* ✅ Ticker Styles */
     #crypto-prices {
       position: fixed;
       bottom: 0;
@@ -162,9 +168,32 @@
   <div class="main">
     <h1>Willkommen im Krypto Dashboard</h1>
     <p>Wähle ein Tool oder eine Übersicht aus.</p>
+
+    <h2>📊 Bitcoin Chart</h2>
+    <div class="chart-container" style="margin-top: 30px; background:#1c1c1c; padding: 20px; border-radius: 12px;">
+      <div class="tradingview-widget-container">
+        <div id="tradingview_btc_chart"></div>
+        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <script type="text/javascript">
+          new TradingView.widget({
+            "width": "100%",
+            "height": 500,
+            "symbol": "BINANCE:BTCUSDT",
+            "interval": "D",
+            "timezone": "Etc/UTC",
+            "theme": "dark",
+            "style": "1",
+            "locale": "de",
+            "toolbar_bg": "#f1f3f6",
+            "enable_publishing": false,
+            "allow_symbol_change": true,
+            "container_id": "tradingview_btc_chart"
+          });
+        </script>
+      </div>
+    </div>
   </div>
 
-  <!-- ✅ Ticker -->
   <div id="crypto-prices"><span>📊 Kurse werden geladen...</span></div>
 
   <script>
@@ -173,7 +202,8 @@
     }
 
     function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('open');
+      const sidebar = document.getElementById('sidebar');
+      sidebar.classList.toggle('open');
     }
 
     async function fetchPrices() {
@@ -182,20 +212,21 @@
         const res = await fetch(url);
         const data = await res.json();
         const text = `
-          BTC: $${data.bitcoin.usdt} | 
-          ETH: $${data.ethereum.usdt} | 
-          XRP: $${data.ripple.usdt} | 
-          ADA: $${data.cardano.usdt} | 
-          SOL: $${data.solana.usdt} | 
-          BNB: $${data.binancecoin.usdt} | 
-          DOGE: $${data.dogecoin.usdt} | 
-          MATIC: $${data.polygon.usdt} | 
-          DOT: $${data.polkadot.usdt} | 
+          BTC: $${data.bitcoin.usdt} |
+          ETH: $${data.ethereum.usdt} |
+          XRP: $${data.ripple.usdt} |
+          ADA: $${data.cardano.usdt} |
+          SOL: $${data.solana.usdt} |
+          BNB: $${data.binancecoin.usdt} |
+          DOGE: $${data.dogecoin.usdt} |
+          MATIC: $${data.polygon.usdt} |
+          DOT: $${data.polkadot.usdt} |
           AVAX: $${data["avalanche-2"].usdt}
         `;
         document.getElementById('crypto-prices').innerHTML = `<span>${text}</span>`;
       } catch (err) {
         document.getElementById('crypto-prices').innerHTML = "<span>⚠️ Kurse nicht verfügbar</span>";
+        console.error('Fehler beim Abrufen der Preise:', err);
       }
     }
 
