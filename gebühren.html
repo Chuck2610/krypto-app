@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gebührenübersicht</title>
+  <style>
+    body {
+      background: #0f1117;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #00ffc3;
+      margin-bottom: 20px;
+      font-size: 22px;
+      text-align: center;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      margin-bottom: 30px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th, td {
+      border: 1px solid #444;
+      padding: 10px;
+      text-align: center;
+    }
+
+    th {
+      background: #1c1e26;
+      color: #00ffc3;
+    }
+
+    td {
+      background: #1a1a1a;
+    }
+
+    .info {
+      background: #1a1a1a;
+      border-left: 4px solid #00ffc3;
+      padding: 15px;
+      margin-bottom: 10px;
+      font-size: 15px;
+      line-height: 1.4;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+      margin-top: 40px;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 18px;
+      }
+      .info {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <h1>🧾 Komplette Gebührenübersicht (%)</h1>
+
+  <div class="table-container">
+    <table>
+      <tr>
+        <th>Margin Mode</th>
+        <th>Ordertyp</th>
+        <th>Basisgebühr<br>(Maker/Taker)</th>
+        <th>+ Funding-Rate</th>
+        <th>+ Liquidation</th>
+        <th>Gesamtkosten max.<br>(Worst Case)</th>
+      </tr>
+      <tr>
+        <td>Cross Margin</td>
+        <td>Limit Order</td>
+        <td>0,02 %</td>
+        <td>±0,01–0,10 %</td>
+        <td>+ 0,06 %</td>
+        <td>ca. 0,02 % – 0,18 %</td>
+      </tr>
+      <tr>
+        <td>Cross Margin</td>
+        <td>Market Order</td>
+        <td>0,06 %</td>
+        <td>±0,01–0,10 %</td>
+        <td>+ 0,06 %</td>
+        <td>ca. 0,06 % – 0,22 %</td>
+      </tr>
+      <tr>
+        <td>Isolated Margin</td>
+        <td>Limit Order</td>
+        <td>0,02 %</td>
+        <td>±0,01–0,10 %</td>
+        <td>+ 0,06 %</td>
+        <td>ca. 0,02 % – 0,18 %</td>
+      </tr>
+      <tr>
+        <td>Isolated Margin</td>
+        <td>Market Order</td>
+        <td>0,06 %</td>
+        <td>±0,01–0,10 %</td>
+        <td>+ 0,06 %</td>
+        <td>ca. 0,06 % – 0,22 %</td>
+      </tr>
+    </table>
+  </div>
+
+  <div class="info">
+    <strong>Maker/Taker-Gebühr:</strong> Die feste Trading-Fee (Limit = Maker, Market = Taker).
+  </div>
+  <div class="info">
+    <strong>Funding-Rate:</strong> Abhängig vom Markt – kann positiv oder negativ sein (du zahlst oder erhältst). Typisch 0,01 % bis 0,05 %, kann aber höher oder null sein.
+  </div>
+  <div class="info">
+    <strong>Liquidation Fee:</strong> Nur bei Zwangsliquidation, dann ca. 0,06 % des Positionswerts.
+  </div>
+  <div class="info">
+    <strong>"Worst Case":</strong> Market-Order + Funding-Zahlung + Liquidation → ergibt ca. bis 0,22 % Kosten gesamt.
+  </div>
+  <div class="info">
+    ⚠️ Hinweis: Die Funding-Gebühr hängt von deiner Position (long/short), dem Markt und dem Zeitpunkt ab – sie variiert stark. 👉 Bei kurzen Haltezeiten (unter 8h) fällt oft keine Funding Fee an.
+  </div>
+
+  <footer>
+    © 2025 Tim Finkbeiner – All rights reserved.
+  </footer>
+</body>
+</html>
