@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Zinseszins-Rechner – Exportfähig</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      color: white;
+      padding: 40px;
+    }
+    h1 {
+      color: #00e6b8;
+      margin-bottom: 30px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background-color: #1c1c1c;
+      color: white;
+    }
+    button {
+      margin-top: 20px;
+      margin-right: 10px;
+      padding: 10px 20px;
+      background-color: #00e6b8;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    button:hover {
+      background-color: #00bfa6;
+    }
+    .result {
+      margin-top: 30px;
+      background-color: #1a1a1a;
+      padding: 20px;
+      border-radius: 10px;
+      border-left: 4px solid #00e6b8;
+    }
+    canvas {
+      background-color: #fff;
+      border-radius: 8px;
+      margin-top: 20px;
+      padding: 5px;
+      height: 200px !important;
+    }
+    table {
+      width: 100%;
+      margin-top: 30px;
+      border-collapse: collapse;
+      background-color: #1a1a1a;
+      font-size: 14px;
+    }
+    th, td {
+      padding: 8px 10px;
+      border-bottom: 1px solid #2e2e2e;
+      text-align: right;
+    }
+    th {
+      background-color: #00e6b8;
+      color: black;
+      text-align: center;
+    }
+    td:first-child, th:first-child {
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+<h1>📈 Zinseszins-Rechner</h1>
+<div class="grid">
+  <div>
+    <label for="einsatz">Einsatz (€)</label>
+    <input id="einsatz" type="number" placeholder="z. B. 1000"/>
+  </div>
+  <div>
+    <label for="tage">Anzahl der Tage</label>
+    <input id="tage" type="number" placeholder="z. B. 365"/>
+  </div>
+  <div>
+    <label for="zins">Zinsen pro Tag (%)</label>
+    <input id="zins" type="number" placeholder="z. B. 0.1"/>
+  </div>
+</div>
+<button onclick="berechne()">🧮 Berechnen</button>
+<button onclick="exportPDF()">⬇️ Tabelle als PDF</button>
+<div class="result" id="ergebnis"></div>
+<canvas id="chart"></canvas>
+<div id="entwicklungsliste"></div>
+
+<script>
+function berechne() {
+  const einsatz = parseFloat(document.getElementById('einsatz').value);
+  const tage = parseInt(document.getElementById('tage').value);
+  const zins1 = parseFloat(document.getElementById('zins').value);
+
+  if (!einsatz || !tage || !zins1) {
+    document.getElementById('ergebnis').innerHTML = "<span style='color: #f87171;'>Bitte alle Felder korrekt ausfüllen.</span>";
+    return;
+  }
+
+  const labels = [];
+  const werte1 = [];
+  const tabelle = [];
+
+  let kapital = einsatz;
+  for (let i = 1; i <= tage; i++) {
+    const vorher = kapital;
+    kapital += kapital * (zins1 / 100);
+    const gewinn = kapital - vorher;
+    werte1.push(kapital.toFixed(2));
+    labels.push(i);
+    tabelle.push({ tag: i, zinssatz: zins1.toFixed(2), kapital: kapital, gewinn: gewinn });
+  }
+
+  const endbetrag = parseFloat(werte1[werte1.length - 1]);
+  document.getElementById("ergebnis").innerHTML = `<strong>📊 Endbetrag nach ${tage} Tagen bei ${zins1}%:</strong> ${endbetrag.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
+
+  const ctx = document.getElementById('chart').getContext('2d');
+  if (window.myChart) window.myChart.destroy();
+  window.myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [
+        { label: `${zins1}%`, data: werte1, borderColor: '#00e6b8', fill: false }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'top' },
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              return `${context.dataset.label}: ${parseFloat(context.raw).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
+            }
+          }
+        }
+      },
+      scales: { y: { beginAtZero: false } }
+    }
+  });
+
+  let tableHTML = "<table id='resultTable'><thead><tr><th>Tag</th><th>Zinssatz %</th><th>Kapital (€)</th><th>Täglicher Gewinn (€)</th></tr></thead><tbody>";
+  tabelle.forEach(row => {
+    tableHTML += `<tr>
+      <td>${row.tag}</td>
+      <td>${row.zinssatz}</td>
+      <td>${parseFloat(row.kapital).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+      <td>${parseFloat(row.gewinn).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+    </tr>`;
+  });
+  tableHTML += "</tbody></table>";
+  document.getElementById("entwicklungsliste").innerHTML = tableHTML;
+}
+
+function exportPDF() {
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF();
+  const rows = [];
+  const table = document.querySelectorAll("#resultTable tbody tr");
+  table.forEach(tr => {
+    const cells = tr.querySelectorAll("td");
+    rows.push(Array.from(cells).map(td => td.textContent));
+  });
+  doc.text("Zinseszins-Tabelle", 14, 14);
+  doc.autoTable({
+    startY: 20,
+    head: [['Tag', 'Zinssatz %', 'Kapital (€)', 'Täglicher Gewinn (€)']],
+    body: rows,
+    theme: 'grid'
+  });
+  doc.save("zinseszins_tabelle.pdf");
+}
+</script>
+</body>
+</html>
