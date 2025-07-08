@@ -1,7 +1,3 @@
-# Wir speichern den optimierten login.html Code als Datei für den Download
-login_html_path = "/mnt/data/login-mobil-und-desktop.html"
-
-login_html_code = """
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -18,7 +14,7 @@ login_html_code = """
     body {
       margin: 0;
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
+      background: #121212;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -112,9 +108,3 @@ login_html_code = """
   </script>
 </body>
 </html>
-"""
-
-with open(login_html_path, "w", encoding="utf-8") as f:
-    f.write(login_html_code)
-
-login_html_path
