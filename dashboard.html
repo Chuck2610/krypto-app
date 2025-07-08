@@ -3,165 +3,181 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Krypto Dashboard</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
+  <title>Dashboard – Tim Finkbeiner</title>
   <style>
-    * { box-sizing: border-box; }
-    body {
-      font-family: 'Inter', sans-serif;
-      margin: 0;
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-      color: white;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #0f1117; color: #fff; }
 
     .sidebar {
-      width: 250px;
-      background: #111;
+      width: 220px;
+      background: #1c1e26;
+      height: 100vh;
       position: fixed;
-      top: 0;
-      bottom: 0;
-      left: 0;
-      padding: 30px 20px;
-      display: flex;
-      flex-direction: column;
-      z-index: 1000;
+      top: 0; left: 0;
+      padding: 20px;
+      overflow-y: auto;
       transition: transform 0.3s ease;
     }
 
-    .sidebar h2 { color: #00e6b8; margin-bottom: 30px; }
-    .sidebar h3 { margin: 20px 0 10px; font-size: 16px; color: #888; }
+    .sidebar h2 { margin-bottom: 20px; font-size: 20px; color: #00ffc3; }
     .sidebar a {
-      color: white; text-decoration: none; margin: 6px 0;
-      padding: 8px; border-radius: 6px; display: block;
-      transition: background 0.3s;
-    }
-
-    .sidebar a:hover {
-      background-color: #00e6b8;
-      color: black;
-    }
-
-    .logout-btn {
-      margin-top: auto;
+      display: block;
       padding: 10px;
-      background-color: #00e6b8;
-      color: black;
-      border: none;
+      color: #ddd;
+      text-decoration: none;
+      margin-bottom: 8px;
       border-radius: 6px;
-      font-weight: bold;
-      cursor: pointer;
+      transition: 0.3s;
     }
 
-    .logout-btn:hover { background-color: #00bfa6; }
+    .sidebar a:hover { background: #00ffc3; color: #000; }
 
     .main {
-      margin-left: 250px;
-      padding: 40px;
+      margin-left: 240px;
+      padding: 20px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
     }
 
     .menu-toggle {
       display: none;
-      position: fixed;
-      top: 15px;
-      left: 15px;
-      z-index: 1100;
-      background: #00e6b8;
-      color: black;
+      font-size: 24px;
+      background: none;
       border: none;
-      padding: 10px 15px;
-      border-radius: 5px;
-      font-weight: bold;
+      color: #00ffc3;
+    }
+
+    .logout {
+      padding: 10px 20px;
+      background: #00ffc3;
+      color: #000;
+      border: none;
+      border-radius: 6px;
       cursor: pointer;
     }
 
+    footer {
+      padding: 10px;
+      text-align: center;
+      background: #111;
+      color: #aaa;
+      font-size: 14px;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      z-index: 1000;
+    }
+
     @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .sidebar.open { transform: translateX(0) !important; }
-      .main { margin-left: 0; padding: 20px; }
-      .menu-toggle { display: block; }
+      .sidebar {
+        transform: translateX(-100%);
+        position: fixed;
+        z-index: 2000;
+      }
+
+      .sidebar.open {
+        transform: translateX(0);
+      }
+
+      .main {
+        margin-left: 0;
+        padding: 20px;
+      }
+
+      .menu-toggle {
+        display: block;
+      }
+    }
+
+    .ticker {
+      position: fixed;
+      bottom: 100px;
+      width: 100%;
+      background: #222;
+      color: #00ffc3;
+      padding: 8px;
+      font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      z-index: 3000;
+    }
+
+    .ticker span {
+      display: inline-block;
+      padding-right: 50px;
+      animation: scroll 20s linear infinite;
+    }
+
+    @keyframes scroll {
+      from { transform: translateX(100%); }
+      to { transform: translateX(-100%); }
     }
   </style>
 </head>
 <body>
 
-  <button class="menu-toggle" onclick="toggleSidebar()">☰ Menü</button>
+<div class="sidebar" id="sidebar">
+  <h2>Menü</h2>
+  <a href="compound.html">📈 Compound Calculator</a>
+  <a href="trailing-profit.html">💹 Trailing Stop in Profit</a>
+  <a href="trailing-direct.html">📉 Trailing Stop direct</a>
+  <a href="steffi.html">👤 Steffi</a>
+  <a href="uli.html">👤 Uli</a>
+  <a href="income.html">💰 Income Overview</a>
+  <a href="links.html">🔗 Links</a>
+</div>
 
-  <div class="sidebar" id="sidebar">
-    <h2>🔗 KryptoApp</h2>
-    <h3>Math Tools</h3>
-    <a href="#">📈 Compound Calculator</a>
-    <a href="#">💹 Trailing Stop in Profit</a>
-    <a href="#">📉 Trailing Stop direct</a>
-
-    <h3>External Accounts</h3>
-    <a href="#">👤 Steffi</a>
-    <a href="#">👤 Uli</a>
-
-    <h3>Overview</h3>
-    <a href="#">💰 Income Overview</a>
-    <a href="#">🔗 Links</a>
-
-    <button class="logout-btn" onclick="logout()">Logout</button>
+<div class="main">
+  <div class="top-bar">
+    <button class="menu-toggle" onclick="toggleSidebar()">☰</button>
+    <button class="logout" onclick="logout()">Logout</button>
   </div>
 
-  <div class="main">
-    <h1>Willkommen im Krypto Dashboard</h1>
-    <p>Wähle ein Tool oder eine Übersicht aus.</p>
-
-    <h2>📊 Live Bitcoin Chart</h2>
-    <div style="margin-top: 20px;">
-      <div class="tradingview-widget-container">
-        <div id="tradingview_btc_chart"></div>
-        <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
-        <script type="text/javascript">
-          new TradingView.widget({
-            "width": "100%",
-            "height": 500,
-            "symbol": "BINANCE:BTCUSDT",
-            "interval": "D",
-            "timezone": "Etc/UTC",
-            "theme": "dark",
-            "style": "1",
-            "locale": "de",
-            "toolbar_bg": "#f1f3f6",
-            "enable_publishing": false,
-            "allow_symbol_change": true,
-            "container_id": "tradingview_btc_chart"
-          });
-        </script>
-      </div>
-    </div>
+  <div id="content">
+    <h1>Willkommen im Dashboard</h1>
+    <p>Wähle ein Tool oder eine Übersicht aus dem Menü.</p>
   </div>
 
-  <!-- TradingView Mini-Ticker unten -->
-  <div class="tradingview-widget-container" style="position:fixed; bottom:0; width:100%; z-index:3000">
-    <div class="tradingview-widget-container__widget"></div>
-    <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-ticker-tape.js" async>
-    {
-      "symbols": [
-        { "proName": "BINANCE:BTCUSDT", "title": "BTC/USDT" },
-        { "proName": "BINANCE:ETHUSDT", "title": "ETH/USDT" },
-        { "proName": "BINANCE:SOLUSDT", "title": "SOL/USDT" },
-        { "proName": "BINANCE:DOGEUSDT", "title": "DOGE/USDT" },
-        { "proName": "BINANCE:ADAUSDT", "title": "ADA/USDT" }
-      ],
-      "colorTheme": "dark",
-      "isTransparent": false,
-      "displayMode": "regular",
-      "locale": "de"
-    }
-    </script>
+  <div style="margin-top: 40px;">
+    <iframe src="https://s.tradingview.com/widgetembed/?frameElementId=tradingview_abcdef&symbol=BINANCE:BTCUSDT&interval=60&hidesidetoolbar=1&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=[]&theme=dark&style=1&timezone=Europe/Berlin&withdateranges=1&hidevolume=1&studies_overrides={}&overrides={}&enabled_features=[]&disabled_features=[]"
+      width="100%" height="400" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
   </div>
+</div>
 
-  <script>
-    function logout() {
-      window.location.href = "login.html";
-    }
+<div class="ticker" id="ticker">⏳ Kurse werden geladen ...</div>
 
-    function toggleSidebar() {
-      const sidebar = document.getElementById('sidebar');
-      sidebar.classList.toggle('open');
-    }
-  </script>
+<footer>
+  © 2025 Tim Finkbeiner – All rights reserved.
+</footer>
+
+<script>
+  function logout() {
+    window.location.href = "login.html";
+  }
+
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    sidebar.classList.toggle("open");
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,cardano,polkadot&vs_currencies=usd")
+      .then(res => res.json())
+      .then(data => {
+        const items = Object.entries(data).map(([coin, info]) =>
+          `${coin.toUpperCase()}: $${info.usd.toLocaleString()}`
+        );
+        document.getElementById("ticker").innerHTML = "<span>" + items.join(" • ") + "</span>";
+      })
+      .catch(() => {
+        document.getElementById("ticker").innerText = "⚠️ Kurse nicht verfügbar";
+      });
+  });
+</script>
 </body>
 </html>
