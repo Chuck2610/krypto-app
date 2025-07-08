@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Zinseszins-Rechner – Exportfähig</title>
+  <title>Zinseszins-Rechner</title>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -11,104 +11,150 @@
   <style>
     body {
       font-family: 'Inter', sans-serif;
-      background: linear-gradient(to bottom, #0f2027, #203a43, #2c5364);
-      color: white;
-      padding: 40px;
+      background: #0f1117;
+      color: #fff;
+      padding: 20px;
     }
+
     h1 {
-      color: #00e6b8;
+      text-align: center;
+      color: #00ffc3;
       margin-bottom: 30px;
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 20px;
+
+    .container {
+      max-width: 700px;
+      margin: auto;
+      background: #1c1e26;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 15px rgba(0,255,200,0.05);
     }
+
     label {
       display: block;
-      margin-bottom: 6px;
-      font-weight: 500;
+      margin-top: 15px;
+      font-size: 15px;
+      color: #ccc;
     }
+
     input {
       width: 100%;
       padding: 10px;
-      border-radius: 8px;
-      border: none;
-      background-color: #1c1c1c;
-      color: white;
+      margin-top: 5px;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      border-radius: 6px;
+      color: #fff;
+      font-size: 16px;
     }
+
     button {
       margin-top: 20px;
-      margin-right: 10px;
-      padding: 10px 20px;
-      background-color: #00e6b8;
+      padding: 12px 20px;
+      background: #00ffc3;
       color: black;
+      font-size: 14px;
       font-weight: bold;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
-      font-size: 14px;
     }
+
     button:hover {
-      background-color: #00bfa6;
+      background: #00c2a9;
     }
+
     .result {
-      margin-top: 30px;
-      background-color: #1a1a1a;
-      padding: 20px;
-      border-radius: 10px;
-      border-left: 4px solid #00e6b8;
+      margin-top: 25px;
+      background: #0e1015;
+      padding: 15px;
+      border-left: 4px solid #00ffc3;
+      font-size: 16px;
     }
+
     canvas {
-      background-color: #fff;
+      background: #fff;
       border-radius: 8px;
       margin-top: 20px;
-      padding: 5px;
-      height: 200px !important;
+      padding: 10px;
+      width: 100%;
+      height: auto;
     }
+
     table {
       width: 100%;
       margin-top: 30px;
       border-collapse: collapse;
-      background-color: #1a1a1a;
       font-size: 14px;
     }
+
     th, td {
       padding: 8px 10px;
       border-bottom: 1px solid #2e2e2e;
       text-align: right;
     }
+
     th {
-      background-color: #00e6b8;
+      background-color: #00ffc3;
       color: black;
       text-align: center;
     }
+
     td:first-child, th:first-child {
       text-align: center;
+    }
+
+    .back {
+      display: block;
+      text-align: center;
+      margin-top: 30px;
+      text-decoration: none;
+      color: #00ffc3;
+      font-size: 15px;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+      .container {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
+
 <h1>📈 Zinseszins-Rechner</h1>
-<div class="grid">
-  <div>
-    <label for="einsatz">Einsatz (€)</label>
-    <input id="einsatz" type="number" placeholder="z. B. 1000"/>
-  </div>
-  <div>
-    <label for="tage">Anzahl der Tage</label>
-    <input id="tage" type="number" placeholder="z. B. 365"/>
-  </div>
-  <div>
-    <label for="zins">Zinsen pro Tag (%)</label>
-    <input id="zins" type="number" placeholder="z. B. 0.1"/>
-  </div>
+<div class="container">
+  <label for="einsatz">💶 Einsatz (€)</label>
+  <input id="einsatz" type="number" placeholder="z. B. 1000"/>
+
+  <label for="tage">📆 Anzahl der Tage</label>
+  <input id="tage" type="number" placeholder="z. B. 365"/>
+
+  <label for="zins">📊 Zinsen pro Tag (%)</label>
+  <input id="zins" type="number" placeholder="z. B. 0.1"/>
+
+  <button onclick="berechne()">🧮 Berechnen</button>
+  <button onclick="exportPDF()">⬇️ Tabelle als PDF</button>
+
+  <div class="result" id="ergebnis"></div>
+  <canvas id="chart"></canvas>
+  <div id="entwicklungsliste"></div>
+
+  <a class="back" href="dashboard.html">⬅️ Zurück zum Dashboard</a>
 </div>
-<button onclick="berechne()">🧮 Berechnen</button>
-<button onclick="exportPDF()">⬇️ Tabelle als PDF</button>
-<div class="result" id="ergebnis"></div>
-<canvas id="chart"></canvas>
-<div id="entwicklungsliste"></div>
+
+<footer>© 2025 Tim Finkbeiner – All rights reserved.</footer>
 
 <script>
 function berechne() {
@@ -121,11 +167,9 @@ function berechne() {
     return;
   }
 
-  const labels = [];
-  const werte1 = [];
-  const tabelle = [];
-
+  const labels = [], werte1 = [], tabelle = [];
   let kapital = einsatz;
+
   for (let i = 1; i <= tage; i++) {
     const vorher = kapital;
     kapital += kapital * (zins1 / 100);
@@ -136,7 +180,8 @@ function berechne() {
   }
 
   const endbetrag = parseFloat(werte1[werte1.length - 1]);
-  document.getElementById("ergebnis").innerHTML = `<strong>📊 Endbetrag nach ${tage} Tagen bei ${zins1}%:</strong> ${endbetrag.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
+  document.getElementById("ergebnis").innerHTML =
+    `<strong>📊 Endbetrag nach ${tage} Tagen bei ${zins1}%:</strong> ${endbetrag.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
 
   const ctx = document.getElementById('chart').getContext('2d');
   if (window.myChart) window.myChart.destroy();
@@ -196,5 +241,6 @@ function exportPDF() {
   doc.save("zinseszins_tabelle.pdf");
 }
 </script>
+
 </body>
 </html>
