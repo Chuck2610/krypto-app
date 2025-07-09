@@ -247,11 +247,3 @@ function exportPDF() {
 
 </body>
 </html>
-"""
-
-# Speichern der Datei
-compound_file = Path("/mnt/data/compound-styleguide.html")
-compound_file.write_text(compound_html_updated, encoding="utf-8")
-
-compound_file.name  # Für Download-Link
-
