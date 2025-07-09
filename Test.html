@@ -20,6 +20,7 @@
       top: 0; left: 0;
       padding: 20px;
       overflow-y: auto;
+      z-index: 3000;
       transition: transform 0.3s ease;
       box-shadow: 0 0 10px rgba(0,255,200,0.05);
     }
@@ -51,6 +52,8 @@
     }
 
     .top-bar {
+      position: relative;
+      z-index: 100;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -151,7 +154,6 @@
     <a href="trailing-profit.html">💹 Trailing Stop in Profit</a>
     <a href="trailing-direct.html">📉 Trailing Stop direct</a>
     <a href="reale-steigerung.html">📈 Reale Steigerung</a>
-    <a href="Test.html">📈 Reale Steigerung</a>
   </div>
   <div style="margin-bottom: 15px;">
     <strong style="color:#00ffc3;">– Extern Profile</strong>
@@ -201,6 +203,16 @@
     const sidebar = document.getElementById("sidebar");
     sidebar.classList.toggle("open");
   }
+
+  // Menü automatisch schließen bei Klick auf Link im mobilen Modus
+  document.querySelectorAll(".sidebar a").forEach(link => {
+    link.addEventListener("click", () => {
+      const sidebar = document.getElementById("sidebar");
+      if (window.innerWidth <= 600 && sidebar.classList.contains("open")) {
+        sidebar.classList.remove("open");
+      }
+    });
+  });
 
   document.addEventListener("DOMContentLoaded", function () {
     fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,solana,cardano,polkadot&vs_currencies=usd")
