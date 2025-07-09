@@ -6,7 +6,11 @@
   <title>Dashboard – Tim Finkbeiner</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Arial, sans-serif; background: #0f1117; color: #fff; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f1117;
+      color: #ffffff;
+    }
 
     .sidebar {
       width: 220px;
@@ -17,20 +21,29 @@
       padding: 20px;
       overflow-y: auto;
       transition: transform 0.3s ease;
+      box-shadow: 0 0 10px rgba(0,255,200,0.05);
     }
 
-    .sidebar h2 { margin-bottom: 20px; font-size: 20px; color: #00ffc3; }
+    .sidebar h2 {
+      margin-bottom: 20px;
+      font-size: 20px;
+      color: #00ffc3;
+    }
+
     .sidebar a {
       display: block;
       padding: 10px;
-      color: #ddd;
+      color: #ccc;
       text-decoration: none;
       margin-bottom: 8px;
       border-radius: 6px;
       transition: 0.3s;
     }
 
-    .sidebar a:hover { background: #00ffc3; color: #000; }
+    .sidebar a:hover {
+      background: #00ffc3;
+      color: #000;
+    }
 
     .main {
       margin-left: 240px;
@@ -56,15 +69,20 @@
       padding: 10px 20px;
       background: #00ffc3;
       color: #000;
+      font-weight: bold;
       border: none;
       border-radius: 6px;
       cursor: pointer;
     }
 
+    .logout:hover {
+      background: #00c2a9;
+    }
+
     footer {
       padding: 10px;
       text-align: center;
-      background: #111;
+      background: #0f1117;
       color: #aaa;
       font-size: 14px;
       position: fixed;
@@ -73,7 +91,7 @@
       z-index: 1000;
     }
 
-    @media (max-width: 768px) {
+    @media (max-width: 600px) {
       .sidebar {
         transform: translateX(-100%);
         position: fixed;
@@ -92,13 +110,17 @@
       .menu-toggle {
         display: block;
       }
+
+      .logout {
+        font-size: 15px;
+      }
     }
 
     .ticker {
       position: fixed;
       bottom: 100px;
       width: 100%;
-      background: #222;
+      background: #1a1a1a;
       color: #00ffc3;
       padding: 8px;
       font-size: 14px;
@@ -123,15 +145,27 @@
 
 <div class="sidebar" id="sidebar">
   <h2>Menü</h2>
-  <a href="compound.html">📊 Compound Calculator</a>
-  <a href="trailing-profit.html">💹 Trailing Stop in Profit</a>
-  <a href="trailing-direct.html">📉 Trailing Stop direct</a>
-  <a href="steffi.html">👤 Steffi</a>
-  <a href="uli.html">👤 Uli</a>
-  <a href="income.html">💰 Income Overview</a>
-  <a href="links.html">🔗 Links</a>
-  <a href="gebuehren.html">💸 gebühren</a>
-  <a href="reale-steigerung.html">📈 reale steigerung</a>
+  <div style="margin-bottom: 15px;">
+    <strong style="color:#00ffc3;">– Rechner</strong>
+    <a href="compound.html">📊 Compound Calculator</a>
+    <a href="trailing-profit.html">💹 Trailing Stop in Profit</a>
+    <a href="trailing-direct.html">📉 Trailing Stop direct</a>
+    <a href="reale-steigerung.html">📈 Reale Steigerung</a>
+  </div>
+  <div style="margin-bottom: 15px;">
+    <strong style="color:#00ffc3;">– Extern Profile</strong>
+    <a href="steffi.html">👤 Steffi</a>
+    <a href="uli.html">👤 Uli</a>
+  </div>
+  <div style="margin-bottom: 15px;">
+    <strong style="color:#00ffc3;">– Übersichten</strong>
+    <a href="income.html">💰 Income Overview</a>
+  </div>
+  <div style="margin-bottom: 15px;">
+    <strong style="color:#00ffc3;">– Infos</strong>
+    <a href="links.html">🔗 Links</a>
+    <a href="gebuehren.html">💸 Gebühren</a>
+  </div>
 </div>
 
 <div class="main">
