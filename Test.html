@@ -52,8 +52,7 @@
     }
 
     .top-bar {
-      position: relative;
-      z-index: 100;
+      margin-top: 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -201,7 +200,12 @@
 
   function toggleSidebar() {
     const sidebar = document.getElementById("sidebar");
-    sidebar.classList.toggle("open");
+    const isOpen = sidebar.classList.contains("open");
+    if (isOpen) {
+      sidebar.classList.remove("open");
+    } else {
+      sidebar.classList.add("open");
+    }
   }
 
   // Menü automatisch schließen bei Klick auf Link im mobilen Modus
