@@ -4,31 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zinseszins-Rechner</title>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@500&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <style>
     body {
-      font-family: 'Inter', sans-serif;
+      font-family: Arial, sans-serif;
       background: #0f1117;
-      color: #fff;
+      color: #ffffff;
       padding: 20px;
     }
 
     h1 {
       text-align: center;
-      color: #00ffc3;
+      color: #ffffff;
+      font-size: 28px;
       margin-bottom: 30px;
     }
 
     .container {
-      max-width: 700px;
+      max-width: 600px;
       margin: auto;
       background: #1c1e26;
       padding: 25px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,255,200,0.05);
+      box-shadow: 0 0 10px rgba(0,255,200,0.05);
     }
 
     label {
@@ -43,8 +43,8 @@
       padding: 10px;
       margin-top: 5px;
       background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 6px;
+      border: none;
+      border-radius: 5px;
       color: #fff;
       font-size: 16px;
     }
@@ -67,9 +67,9 @@
 
     .result {
       margin-top: 25px;
-      background: #0e1015;
+      background: #1a1a1a;
       padding: 15px;
-      border-left: 4px solid #00ffc3;
+      border-radius: 5px;
       font-size: 16px;
     }
 
@@ -127,6 +127,9 @@
       }
       .container {
         padding: 20px;
+      }
+      input, button {
+        font-size: 15px;
       }
     }
   </style>
@@ -244,3 +247,11 @@ function exportPDF() {
 
 </body>
 </html>
+"""
+
+# Speichern der Datei
+compound_file = Path("/mnt/data/compound-styleguide.html")
+compound_file.write_text(compound_html_updated, encoding="utf-8")
+
+compound_file.name  # Für Download-Link
+
