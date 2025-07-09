@@ -1,54 +1,132 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Seite in Arbeit</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #f7f7f7, #eaeaea);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            text-align: center;
-            padding: 40px;
-            border-radius: 12px;
-            background-color: white;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        }
-        h1 {
-            color: #333;
-        }
-        p {
-            color: #666;
-            font-size: 1.2em;
-        }
-        .loader {
-            border: 6px solid #f3f3f3;
-            border-top: 6px solid #3498db;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            margin: 20px auto;
-            animation: spin 1s linear infinite;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Beliebte Krypto-Links</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #0f1117;
+      color: #ffffff;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      font-size: 28px;
+      margin-bottom: 30px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background: #1c1e26;
+      padding: 25px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,255,200,0.05);
+    }
+
+    h2 {
+      color: #00ffc3;
+      font-size: 18px;
+      margin-top: 20px;
+    }
+
+    ul {
+      padding-left: 20px;
+      margin-top: 10px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    a {
+      color: #00ffc3;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #00c2a9;
+    }
+
+    em {
+      display: block;
+      margin-top: 30px;
+      color: #ccc;
+      font-size: 14px;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #aaa;
+    }
+
+    @media (max-width: 600px) {
+      h1 {
+        font-size: 20px;
+      }
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Diese Seite ist in Arbeit</h1>
-        <div class="loader"></div>
-        <p>Wir bauen gerade etwas Großartiges für dich!<br>Schau bald wieder vorbei.</p>
-    </div>
+
+  <h1>🔗 Beliebte Krypto-Links – Übersicht</h1>
+
+  <div class="container">
+    <h2>1. Krypto-News & Magazine</h2>
+    <ul>
+      <li><a href="https://www.coindesk.com" target="_blank">CoinDesk</a></li>
+      <li><a href="https://www.cointelegraph.com" target="_blank">Cointelegraph</a></li>
+      <li><a href="https://www.coingape.com" target="_blank">CoinGape</a></li>
+      <li><a href="https://www.decrypt.co" target="_blank">Decrypt</a></li>
+      <li><a href="https://u.today" target="_blank">U.Today</a></li>
+    </ul>
+
+    <h2>2. Handelsplattformen (Krypto-Börsen)</h2>
+    <ul>
+      <li><a href="https://www.binance.com" target="_blank">Binance</a></li>
+      <li><a href="https://www.coinbase.com" target="_blank">Coinbase</a></li>
+      <li><a href="https://www.kraken.com" target="_blank">Kraken</a></li>
+      <li><a href="https://www.crypto.com" target="_blank">Crypto.com</a></li>
+      <li><a href="https://www.bitvavo.com" target="_blank">Bitvavo</a></li>
+      <li><a href="https://bisonapp.com" target="_blank">Bison (Börse Stuttgart)</a></li>
+      <li><a href="https://www.bitpanda.com" target="_blank">Bitpanda</a></li>
+      <li><a href="https://www.bsdex.de" target="_blank">BSDEX</a></li>
+      <li><a href="https://www.bitcoin.de" target="_blank">Bitcoin.de</a></li>
+    </ul>
+
+    <h2>3. Wallets & Sicherheit</h2>
+    <ul>
+      <li><a href="https://www.ledger.com" target="_blank">Ledger Hardware Wallet</a></li>
+      <li><a href="https://trezor.io" target="_blank">Trezor Wallet</a></li>
+      <li><a href="https://www.bestwallet.com" target="_blank">Best Wallet</a></li>
+      <li><a href="https://metamask.io" target="_blank">MetaMask</a></li>
+      <li><a href="https://bluewallet.io" target="_blank">BlueWallet</a></li>
+      <li><a href="https://phoenixwallet.org" target="_blank">Phoenix Wallet</a></li>
+    </ul>
+
+    <h2>4. Vergleich & Infoportale</h2>
+    <ul>
+      <li><a href="https://www.kryptovergleich.de" target="_blank">kryptovergleich.de</a></li>
+      <li><a href="https://www.btc-echo.de" target="_blank">BTC-ECHO</a></li>
+      <li><a href="https://www.finanzfluss.de" target="_blank">Finanzfluss</a></li>
+      <li><a href="https://kryptoszene.de" target="_blank">Kryptoszene.de</a></li>
+    </ul>
+
+    <em>Stand: Juli 2025 – Alle Links öffnen sich in einem neuen Tab.</em>
+  </div>
+
+  <footer>
+    © 2025 Tim Finkbeiner – All rights reserved.
+  </footer>
+
 </body>
 </html>
