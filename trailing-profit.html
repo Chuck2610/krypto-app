@@ -1,36 +1,36 @@
-<!DOCTYPE html>
+# Aktualisierte Version der HTML-Datei mit gewünschter Logik-Anpassung im JavaScript
+updated_html_content = """<!DOCTYPE html>
 <html lang="de">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Trailing Stop Rechner</title>
+  <title>Trailing Stop – Direkt</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #0f1117;
-      color: #fff;
+      background-color: #0f1117;
+      color: #ffffff;
+      margin: 0;
       padding: 20px;
     }
 
     h1 {
       text-align: center;
-      color: #00ffc3;
-      margin-bottom: 30px;
+      font-size: 28px;
     }
 
     .container {
       max-width: 600px;
       margin: auto;
-      background: #1c1e26;
+      background-color: #1c1e26;
       padding: 25px;
       border-radius: 10px;
-      box-shadow: 0 0 15px rgba(0,255,200,0.05);
+      box-shadow: 0 0 10px rgba(0,255,200,0.05);
     }
 
     label {
-      margin-top: 15px;
       display: block;
-      font-size: 15px;
+      margin-top: 15px;
       color: #ccc;
     }
 
@@ -38,10 +38,10 @@
       width: 100%;
       padding: 10px;
       margin-top: 5px;
-      background: #1a1a1a;
-      border: 1px solid #333;
-      border-radius: 6px;
-      color: #fff;
+      border: none;
+      border-radius: 5px;
+      background-color: #1a1a1a;
+      color: #ffffff;
       font-size: 16px;
     }
 
@@ -49,41 +49,39 @@
       margin-top: 20px;
       width: 100%;
       padding: 12px;
-      background: #00ffc3;
+      background-color: #00ffc3;
       border: none;
+      border-radius: 6px;
+      font-weight: bold;
       color: #000;
       font-size: 16px;
-      font-weight: bold;
-      border-radius: 6px;
       cursor: pointer;
     }
 
     button:hover {
-      background: #00c2a9;
+      background-color: #00c2a9;
     }
 
     .result {
       margin-top: 25px;
-      background: #0e1015;
+      background-color: #1a1a1a;
       padding: 15px;
-      border-left: 4px solid #00ffc3;
-      white-space: pre-line;
-      font-size: 16px;
+      border-radius: 5px;
+      color: #ffffff;
+      line-height: 1.6;
     }
 
     .back {
-      display: block;
-      text-align: center;
-      margin-top: 30px;
+      display: inline-block;
+      margin-top: 20px;
       text-decoration: none;
       color: #00ffc3;
-      font-size: 15px;
     }
 
     footer {
-      margin-top: 40px;
       text-align: center;
-      font-size: 14px;
+      margin-top: 30px;
+      font-size: 0.9em;
       color: #aaa;
     }
 
@@ -95,23 +93,22 @@
   </style>
 </head>
 <body>
-
-  <h1>🎯 Trailing Stop Rechner (inkl. Steuer)</h1>
+  <h1>🎯 Trailing Stop – profit</h1>
 
   <div class="container">
-    <label for="entryPrice">📍 Break Even (USDT)</label>
-    <input type="number" id="entryPrice" step="0.01" placeholder="z. B. 100">
+    <label>📍 Einstiegspreis</label>
+    <input type="number" id="entryPrice" step="any" placeholder="z.B. 10000">
 
-    <label for="leverage">📈 Hebel</label>
-    <input type="number" id="leverage" step="0.1" placeholder="z. B. 10">
+    <label>📍 Hebel</label>
+    <input type="number" id="leverage" step="any" placeholder="z.B. 10">
 
-    <label for="profitPercent">💰 Ziel-Gewinn in % (mit Hebel)</label>
-    <input type="number" id="profitPercent" step="0.1" placeholder="z. B. 20">
+    <label>📍 Gewinn in %</label>
+    <input type="number" id="targetPercent" step="any" placeholder="z.B. 20">
 
-    <label for="trailingOfProfit">📉 Callback vom Gewinn in %</label>
-    <input type="number" id="trailingOfProfit" step="0.1" placeholder="z. B. 30">
+    <label>📍 Callback in % vom Gewinn</label>
+    <input type="number" id="callback" step="any" placeholder="z.B. 50">
 
-    <label for="direction">📊 Richtung</label>
+    <label>📍 Richtung</label>
     <select id="direction">
       <option value="long">Long</option>
       <option value="short">Short</option>
@@ -119,7 +116,8 @@
 
     <button onclick="calculate()">🧮 Berechnen</button>
 
-    <div id="output" class="result"></div>
+    <div class="result" id="output">... Ergebnis wird hier angezeigt ...</div>
+
     <a class="back" href="dashboard.html">🔙 Zurück zum Dashboard</a>
   </div>
 
@@ -129,41 +127,45 @@
     function calculate() {
       const entry = parseFloat(document.getElementById('entryPrice').value);
       const leverage = parseFloat(document.getElementById('leverage').value);
-      const profitPercent = parseFloat(document.getElementById('profitPercent').value);
-      const trailingPercent = parseFloat(document.getElementById('trailingOfProfit').value);
+      const targetPercent = parseFloat(document.getElementById('targetPercent').value);
+      const callback = parseFloat(document.getElementById('callback').value);
       const direction = document.getElementById('direction').value;
 
-      if ([entry, leverage, profitPercent, trailingPercent].some(isNaN) || leverage === 0) {
-        document.getElementById('output').innerText = "⚠️ Bitte alle Felder korrekt ausfüllen.";
+      if ([entry, leverage, targetPercent, callback].some(isNaN) || leverage === 0) {
+        document.getElementById('output').innerHTML = "<span style='color: #f87171;'>❌ Bitte alle Felder korrekt ausfüllen.</span>";
         return;
       }
 
-      const taxRate = 0.0012; // 0.12%
-      const realMovePercent = profitPercent / leverage;
-      const grossProfit = entry * (realMovePercent / 100);
-      const tax = entry * taxRate;
-      const netProfit = grossProfit - tax;
-      const callbackFromProfit = netProfit * (trailingPercent / 100);
+      const movePercent = targetPercent / leverage;
+      const targetPrice = direction === "long"
+        ? entry * (1 + movePercent / 100)
+        : entry * (1 - movePercent / 100);
 
-      let targetPrice, trailingStopPrice;
-      if (direction === 'long') {
-        targetPrice = entry + netProfit;
-        trailingStopPrice = targetPrice - callbackFromProfit;
-      } else {
-        targetPrice = entry - netProfit;
-        trailingStopPrice = targetPrice + callbackFromProfit;
-      }
+      const trailingStopPercent = movePercent * (callback / 100);
+      const trailingDistance = entry * (trailingStopPercent / 100);
 
-      const trailingStopPercent = Math.abs((entry - trailingStopPrice) / entry) * 100;
+      const trailingStopPrice = direction === "long"
+        ? targetPrice - trailingDistance
+        : targetPrice + trailingDistance;
 
-      document.getElementById('output').innerText =
-        `📈 Richtung: ${direction.toUpperCase()}\n` +
-        `🎯 Zielpreis: ${targetPrice.toFixed(4)}\n` +
-        `🛡️ Trailing Stop: ${trailingStopPrice.toFixed(4)}\n` +
-        `💸 Eingerechnete Steuer (0,12 %): ${tax.toFixed(4)}\n\n` +
-        `📉 Reale Bewegung (ohne Hebel): ${realMovePercent.toFixed(5)} %\n` +
-        `💡 Callback Rate vom Einstieg (Chart): ${trailingStopPercent.toFixed(5)} %`;
+      document.getElementById('output').innerHTML = `
+        <strong>📈 Richtung:</strong> ${direction.toUpperCase()}<br>
+        <strong>💰 Ziel-Kurs bei Gewinn:</strong> <span>${targetPrice.toFixed(4)}</span><br>
+        <strong>🛡️ Trailing Stop:</strong> <span>${trailingStopPrice.toFixed(4)}</span><br><br>
+        <strong>📉 Bewegung ohne Hebel:</strong> ${movePercent.toFixed(5)} %<br>
+        <strong>💡 Callback Rate vom Einstieg:</strong> ${(trailingStopPercent).toFixed(5)} %
+      `;
     }
   </script>
 </body>
 </html>
+"""
+
+# Pfad für die neue Datei
+final_path = Path("/mnt/data/trailing-stop-styleguide-mit-zielkurs.html")
+
+# Schreiben der aktualisierten Datei
+final_path.write_text(updated_html_content, encoding="utf-8")
+
+final_path.name  # Name für Download-Link
+
