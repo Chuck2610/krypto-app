@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Krypto App</title>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+  <title>Krypto App – Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <style>
     body {
       margin: 0;
-      padding: 0;
       font-family: 'Poppins', sans-serif;
       background: linear-gradient(to right, #1f1c2c, #928dab);
       color: white;
@@ -18,30 +18,84 @@
       align-items: center;
       height: 100vh;
       text-align: center;
+      padding: 20px;
     }
 
     h1 {
       font-size: 3rem;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
-    a {
-      text-decoration: none;
-      background-color: #ffffff22;
-      padding: 0.75rem 1.5rem;
+    .login-box {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      max-width: 360px;
+      width: 100%;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
       border-radius: 8px;
+      border: none;
+      background: #ffffff22;
       color: white;
-      font-size: 1.1rem;
-      transition: background 0.3s;
+      font-size: 16px;
     }
 
-    a:hover {
-      background-color: #ffffff55;
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      background: #00e6b8;
+      color: black;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #00bfa6;
+    }
+
+    .icon {
+      font-size: 40px;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
   <h1>Willkommen zur Krypto-App</h1>
-  <a href="login.html">Login</a>
+  <div class="login-box">
+    <div class="icon">🔒</div>
+    <h2>Login</h2>
+    <input type="text" id="username" placeholder="Benutzername" />
+    <input type="password" id="password" placeholder="Passwort" />
+    <button onclick="login()">Login</button>
+  </div>
+
+  <script>
+    function login() {
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      const CORRECT_USERNAME = "admin";
+      const CORRECT_PASSWORD = "geheim123";
+
+      if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
+        Swal.fire('Erfolgreich', 'Login erfolgreich!', 'success').then(() => {
+          // Zielseite kannst du später hier festlegen
+          window.location.href = "dashboard.html";
+        });
+      } else {
+        Swal.fire('Fehler', 'Benutzername oder Passwort falsch.', 'error');
+      }
+    }
+  </script>
 </body>
 </html>
