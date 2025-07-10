@@ -1,80 +1,62 @@
-<!DOCTYPE html>
-<html lang="de">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Futures Widget mit KI</title>
-</head>
-<body style="background:#0f1117; color:#ffffff; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
+<!-- 🔥 KI Krypto Widget mit Experten -->
+<div id="futures-widget" style="font-family:Arial,sans-serif; max-width:900px; margin:auto; background:#121212; color:#fff; padding:20px; border-radius:12px; box-shadow:0 0 10px rgba(0,0,0,0.5);">
 
-  <h1 style='text-align:center; margin-bottom:30px; color:#00ffc3;'>🔍 Futures-Analyse & KI-Auswertung</h1>
+  <h2 style="margin-top:0;">📊 Futures Markt & Expertenanalyse</h2>
 
-  <div class="container" style="max-width:600px;margin:auto;background:#1c1e26;padding:25px;border-radius:10px;box-shadow:0 0 10px rgba(0,255,200,0.05);">
+  <label for="coin-select">Wähle Coin:</label>
+  <select style='background:#1a1a1a; color:#fff; padding:10px; border-radius:6px; border:none; font-size:16px;' id="coin-select">
+    <option value="BTCUSDT">Bitcoin (BTC)</option>
+    <option value="ETHUSDT">Ethereum (ETH)</option>
+    <option value="SOLUSDT">Solana (SOL)</option>
+    <option value="BNBUSDT">Binance Coin (BNB)</option>
+    <option value="XRPUSDT">Ripple (XRP)</option>
+  </select>
 
-    <label for="symbol">🪙 Coin auswählen:</label><br><br>
-    <select id="symbol" style='background:#1a1a1a; color:#fff; padding:10px; border-radius:6px; border:none; font-size:16px;'>
-      <option value="btcusdt">Bitcoin (BTC)</option>
-      <option value="ethusdt">Ethereum (ETH)</option>
-      <option value="solusdt">Solana (SOL)</option>
-      <option value="bnbusdt">Binance Coin (BNB)</option>
-      <option value="xrpusdt">Ripple (XRP)</option>
-    </select>
-    <br><br>
-
-    <button onclick="loadData()" style='background:#00ffc3; color:#000; font-weight:bold; border:none; border-radius:6px; padding:10px 20px; cursor:pointer;'>
-      📈 Laden
-    </button><!-- hover via style block --> 
-
-    <div id="priceData" style="margin-top: 20px;"></div>
-
-    <div style="margin-top: 30px;">
-      <iframe id="chart" width="100%" height="400" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
-    </div>
-
-    <div id="aiAnalysis" style="margin-top: 25px;"></div>
-
+  <div style="margin:15px 0; font-size:1.1em;">
+    <b>📈 Letzter Preis:</b> <span id="last-price">–</span> USDT<br>
+    <b>📊 Mark Price:</b> <span id="mark-price">–</span> USDT
   </div>
 
-  <footer style="margin-top: 40px; text-align:center; font-size:14px; color:#aaa;">
-    © 2025 Tim Finkbeiner – All rights reserved.
-  </footer>
+  <div id="tradingview-chart" style="margin-bottom:20px;"></div>
 
-  <script>
-    const aiTexts = {
-      btcusdt: "🧠 BTC: Der RSI liegt im neutralen Bereich, kurzfristig positive Signale laut KI-Modell.",
-      ethusdt: "🧠 ETH: Das Momentum nimmt zu, KI bewertet die Situation als moderat bullisch.",
-      solusdt: "🧠 SOL: Vorsicht, kurzfristige Volatilität möglich – laut KI keine klare Richtung.",
-      bnbusdt: "🧠 BNB: Geringes Volumen – KI signalisiert Seitwärtsphase.",
-      xrpusdt: "🧠 XRP: RSI überkauft – mögliches Reversal laut Indikator-Kombination."
-    };
+  <div style="background:#1f1f1f; padding:15px; border-radius:8px;">
+    <div style="font-size:1.2em; font-weight:bold; margin-bottom:8px;">🧠 KI-Analyse & Experteneinschätzung:</div>
+    <pre id="ai-analysis" style="white-space:pre-wrap; font-family:inherit; line-height:1.6;"></pre>
+  </div>
+</div>
 
-    function loadData() {
-      const symbol = document.getElementById("symbol").value;
+<script>
+  const analysis = {
+    "BTCUSDT": "📊 Bitcoin Analyse (BTC)\nBitcoin bewegt sich derzeit stabil über der psychologischen Marke von 110.000 USDT.\n\n🧱 Widerstände:\n- 112.000\n- 116.500\n- 120.000–122.000\n\n🛡️ Unterstützungen:\n- 110.000\n- 107.000\n- 104.000\n\n📈 Potenzial:\n- Tageshoch: 112.000\n- Ziel langfristig: 180.000–250.000\n\n👤 Experten:\n- Michael Saylor: „Unser Ziel ist 1.000.000 USD.“\n- John Glover: „110k ist ein kritischer Wendepunkt.“",
+    "ETHUSDT": "📊 Ethereum Analyse (ETH)\nEthereum konsolidiert um 3400 USDT.\n\n🧱 Widerstände:\n- 3450\n- 3650\n- 3800\n\n🛡️ Unterstützungen:\n- 3100\n- 2950\n- 2850\n\n📈 Ausblick:\n- Ziel: 4000+\n\n👤 Experten:\n- Vitalik Buterin: „Basislayer für globale Finanzen.“\n- Bloomberg Crypto: „Ziel: 7.000–10.000.“",
+    "SOLUSDT": "📊 Solana Analyse (SOL)\nRelativ starke Performance über 140 USDT.\n\n🧱 Widerstände:\n- 155\n- 170\n- 188\n\n🛡️ Unterstützungen:\n- 138\n- 128\n- 115\n\n📈 Prognose:\n- Zielzone 180–200\n\n👤 Experten:\n- Bankless: „Performantester Layer-1.“\n- CoinDesk: „Volumenwachstum über ETH.“",
+    "BNBUSDT": "📊 Binance Coin Analyse (BNB)\nStabil in 570–585 USDT.\n\n🧱 Widerstände:\n- 585\n- 600\n- 620\n\n🛡️ Unterstützungen:\n- 550\n- 525\n- 498\n\n📈 Ausblick:\n- Ziel: 650\n\n👤 Experten:\n- Binance Labs: „Ökosystem-Wachstum.“\n- CryptoQuant: „Fair Value 610–680.“",
+    "XRPUSDT": "📊 Ripple Analyse (XRP)\nSeitwärts in 0.56–0.60\n\n🧱 Widerstände:\n- 0.60\n- 0.66\n- 0.75–0.80\n\n🛡️ Unterstützungen:\n- 0.52\n- 0.47\n- 0.42\n\n📈 Szenario:\n- Ziel bei Ausbruch: 0.80\n\n👤 Experten:\n- Ripple Labs: „Asien-Wachstum.“\n- Chartanalyst Hoss: „SEC-News = Volatilität.“"
+  };
 
-      // Binance API Call
-      fetch(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${symbol.toUpperCase()}`)
-        .then(res => res.json())
-        .then(data => {
-          const lastPrice = parseFloat(data.markPrice).toFixed(2);
-          const markPrice = parseFloat(data.indexPrice).toFixed(2);
-          document.getElementById("priceData").innerHTML =
-            `💲 Mark Price: <strong>${markPrice} USDT</strong><br>` +
-            `💹 Last Price: <strong>${lastPrice} USDT</strong>`;
-        })
-        .catch(() => {
-          document.getElementById("priceData").innerText = "⚠️ Fehler beim Laden der Preisdaten.";
-        });
+  let currentCoin = "BTCUSDT";
+  const coinSelect = document.getElementById("coin-select");
 
-      // Chart Widget
-      const chart = document.getElementById("chart");
-      chart.src = `https://s.tradingview.com/widgetembed/?symbol=BINANCE:${symbol.toUpperCase()}&interval=60&theme=dark&style=1&timezone=Europe/Berlin&studies=RSI@tv-basicstudies,Volume@tv-basicstudies,Pivots@tv-basicstudies`;
-
-      // KI-Text anzeigen
-      document.getElementById("aiAnalysis").innerText = aiTexts[symbol] || "ℹ️ Keine Analyse verfügbar.";
+  function updateData(force = false) {
+    const coin = coinSelect.value;
+    if (force || coin !== currentCoin) {
+      currentCoin = coin;
+      document.getElementById("ai-analysis").innerText = analysis[coin] || "Keine Analyse verfügbar.";
+      document.getElementById("tradingview-chart").innerHTML = `
+        <iframe src="https://s.tradingview.com/widgetembed/?symbol=BINANCE:${coin}&interval=15&theme=dark&style=1&locale=de&studies=%5B%22RSI@tv-basicstudies%22,%22VWAP@tv-basicstudies%22,%22PivotPointsStandard@tv-basicstudies%22%5D&hideideas=1"
+          style="width:100%; height:400px; border:none; border-radius:6px;"></iframe>`;
     }
+    fetch(`https://fapi.binance.com/fapi/v1/ticker/price?symbol=${currentCoin}`)
+      .then(r => r.json()).then(d => {
+        document.getElementById("last-price").innerText = parseFloat(d.price).toFixed(2);
+      });
+    fetch(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${currentCoin}`)
+      .then(r => r.json()).then(d => {
+        document.getElementById("mark-price").innerText = parseFloat(d.markPrice).toFixed(2);
+      });
+  }
 
-    // Beim Laden Standardwert anzeigen
-    window.onload = loadData;
-  </script>
-</body>
-</html>
+  coinSelect.addEventListener("change", () => updateData(true));
+  updateData(true);
+  setInterval(updateData, 1000);
+</script>
