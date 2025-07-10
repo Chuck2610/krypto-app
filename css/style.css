@@ -12,15 +12,13 @@ input {
 button {
   padding: 8px 16px;
 }
-.pulse-link {
-  font-weight: 600;
-  color: #00ffc3;
-  animation: pulse 1.5s infinite;
-  display: inline-block;
+
+.pulse {
+  animation: pulse-glow 2s infinite;
 }
 
-@keyframes pulse {
-  0% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.08); opacity: 0.85; }
-  100% { transform: scale(1); opacity: 1; }
+@keyframes pulse-glow {
+  0%   { text-shadow: 0 0 0px #00ffc3; }
+  50%  { text-shadow: 0 0 10px #00ffc3; }
+  100% { text-shadow: 0 0 0px #00ffc3; }
 }
