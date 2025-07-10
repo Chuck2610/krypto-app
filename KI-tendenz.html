@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Futures Widget mit KI</title>
+</head>
+<body style="background:#0f1117; color:#ffffff; font-family: Arial, sans-serif; margin: 0; padding: 20px;">
+
+  <h1 style='text-align:center; margin-bottom:30px; color:#00ffc3;'>🔍 Futures-Analyse & KI-Auswertung</h1>
+
+  <div class="container" style="max-width:600px;margin:auto;background:#1c1e26;padding:25px;border-radius:10px;box-shadow:0 0 10px rgba(0,255,200,0.05);">
+
+    <label for="symbol">🪙 Coin auswählen:</label><br><br>
+    <select id="symbol" style='background:#1a1a1a; color:#fff; padding:10px; border-radius:6px; border:none; font-size:16px;'>
+      <option value="btcusdt">Bitcoin (BTC)</option>
+      <option value="ethusdt">Ethereum (ETH)</option>
+      <option value="solusdt">Solana (SOL)</option>
+      <option value="bnbusdt">Binance Coin (BNB)</option>
+      <option value="xrpusdt">Ripple (XRP)</option>
+    </select>
+    <br><br>
+
+    <button onclick="loadData()" style='background:#00ffc3; color:#000; font-weight:bold; border:none; border-radius:6px; padding:10px 20px; cursor:pointer;'>
+      📈 Laden
+    </button><!-- hover via style block --> 
+
+    <div id="priceData" style="margin-top: 20px;"></div>
+
+    <div style="margin-top: 30px;">
+      <iframe id="chart" width="100%" height="400" frameborder="0" allowtransparency="true" scrolling="no"></iframe>
+    </div>
+
+    <div id="aiAnalysis" style="margin-top: 25px;"></div>
+
+  </div>
+
+  <footer style="margin-top: 40px; text-align:center; font-size:14px; color:#aaa;">
+    © 2025 Tim Finkbeiner – All rights reserved.
+  </footer>
+
+  <script>
+    const aiTexts = {
+      btcusdt: "🧠 BTC: Der RSI liegt im neutralen Bereich, kurzfristig positive Signale laut KI-Modell.",
+      ethusdt: "🧠 ETH: Das Momentum nimmt zu, KI bewertet die Situation als moderat bullisch.",
+      solusdt: "🧠 SOL: Vorsicht, kurzfristige Volatilität möglich – laut KI keine klare Richtung.",
+      bnbusdt: "🧠 BNB: Geringes Volumen – KI signalisiert Seitwärtsphase.",
+      xrpusdt: "🧠 XRP: RSI überkauft – mögliches Reversal laut Indikator-Kombination."
+    };
+
+    function loadData() {
+      const symbol = document.getElementById("symbol").value;
+
+      // Binance API Call
+      fetch(`https://fapi.binance.com/fapi/v1/premiumIndex?symbol=${symbol.toUpperCase()}`)
+        .then(res => res.json())
+        .then(data => {
+          const lastPrice = parseFloat(data.markPrice).toFixed(2);
+          const markPrice = parseFloat(data.indexPrice).toFixed(2);
+          document.getElementById("priceData").innerHTML =
+            `💲 Mark Price: <strong>${markPrice} USDT</strong><br>` +
+            `💹 Last Price: <strong>${lastPrice} USDT</strong>`;
+        })
+        .catch(() => {
+          document.getElementById("priceData").innerText = "⚠️ Fehler beim Laden der Preisdaten.";
+        });
+
+      // Chart Widget
+      const chart = document.getElementById("chart");
+      chart.src = `https://s.tradingview.com/widgetembed/?symbol=BINANCE:${symbol.toUpperCase()}&interval=60&theme=dark&style=1&timezone=Europe/Berlin&studies=RSI@tv-basicstudies,Volume@tv-basicstudies,Pivots@tv-basicstudies`;
+
+      // KI-Text anzeigen
+      document.getElementById("aiAnalysis").innerText = aiTexts[symbol] || "ℹ️ Keine Analyse verfügbar.";
+    }
+
+    // Beim Laden Standardwert anzeigen
+    window.onload = loadData;
+  </script>
+</body>
+</html>
