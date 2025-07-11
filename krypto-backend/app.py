@@ -1,33 +1,20 @@
-
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from PIL import Image
 import pytesseract
+import base64
 import io
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/api/analyze-screenshot', methods=['POST'])
 def analyze_screenshot():
-    image = request.files.get('image')
-    if not image:
-        return jsonify({"error": "Kein Bild empfangen"}), 400
+    if 'image' not in request.files:
+        return jsonify({'error': 'Kein Bild erhalten'}), 400
 
-    try:
-        img = Image.open(io.BytesIO(image.read()))
-        text = pytesseract.image_to_string(img)
+    image_file = request.files['image']
+    image = Image.open(image_file.stream)
+    text = pytesseract.image_to_string(image, lang='eng')
 
-        analysis = f"""📈 Screenshot-Analyse:
-Erkannter Text (gekürzt):
-{text[:500]}
-
-🔍 Mögliche Interpretation:
-- Kurszonen oder Begriffe wie RSI/MACD erkannt?
-- Unterstützung / Widerstand ableitbar?
-- Relevante Preisbereiche im Screenshot sichtbar?
-"""
-        return jsonify({"analysis": analysis})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
-
-if __name__ == '__main__':
-    app.run(debug=True)
+    return jsonify({'result': text})
