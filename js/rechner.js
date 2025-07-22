@@ -103,63 +103,50 @@ function berechne() {
 function generiereExportTemplate(daten, chartDataURL, titel) {
   const container = document.createElement('div');
   container.innerHTML = `
-    <div style="font-family: Arial; padding: 25px; max-width: 800px; color: #000; background: #fff;">
-      <h2 style="text-align: center;">${titel}</h2>
-      <p><strong>📅 Zeitraum:</strong> ${daten.tage} Tage</p>
-      <p><strong>💶 Startkapital:</strong> ${daten.startkapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</p>
-      <p><strong>📈 Täglicher Einsatz:</strong> ${daten.einsatzProzent} %</p>
-      <p><strong>📊 Zinssatz auf Einsatz:</strong> ${daten.zins1} %</p>
-      <p><strong>🏁 Endbetrag:</strong> ${daten.endkapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</p>
-      <div style="page-break-after: always;"></div>
-      <h3>📈 Kapitalentwicklung</h3>
-      <img src="${chartDataURL}" style="width: 100%; margin: 20px 0;" />
-      <h3>📋 Entwicklungstabelle (alle 5 Tage)</h3>
+    <div style="font-family: 'Segoe UI', sans-serif; padding: 30px; max-width: 800px; color: #000; background: #fff;">
+      <h2 style="text-align: center; color: #00bfa5; font-size: 26px; margin-bottom: 20px;">📄 ${titel}</h2>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 30px;">
+        <div><strong>📅 Zeitraum:</strong><br>${daten.tage} Tage</div>
+        <div><strong>💶 Startkapital:</strong><br>${daten.startkapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</div>
+        <div><strong>📈 Täglicher Einsatz:</strong><br>${daten.einsatzProzent} %</div>
+        <div><strong>📊 Gewinn auf Einsatz:</strong><br>${daten.zins1} %</div>
+        <div><strong>🏁 Endbetrag:</strong><br><strong>${daten.endkapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</strong></div>
+      </div>
+
+      <div style="border-top: 1px solid #ddd; margin: 30px 0;"></div>
+
+      <h3 style="margin-bottom: 10px; font-size: 18px; color: #333;">📈 Kapitalentwicklung</h3>
+      <img src="${chartDataURL}" style="width: 100%; margin: 20px 0; border: 1px solid #ccc; border-radius: 8px;" />
+
+      <h3 style="margin: 30px 0 10px; font-size: 18px; color: #333;">📋 Entwicklungstabelle (alle 5 Tage)</h3>
       <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
         <thead>
-          <tr style="background-color: #f0f0f0;">
-            <th style="text-align: center;">Tag</th>
-            <th>Zinssatz (%)</th>
-            <th>Kapital (€)</th>
-            <th>Einsatz (€)</th>
-            <th>Gewinn (€)</th>
+          <tr style="background-color: #00ffc3; color: black;">
+            <th style="padding: 8px; text-align: center;">Tag</th>
+            <th style="padding: 8px; text-align: right;">Zinssatz (%)</th>
+            <th style="padding: 8px; text-align: right;">Kapital (€)</th>
+            <th style="padding: 8px; text-align: right;">Einsatz (€)</th>
+            <th style="padding: 8px; text-align: right;">Gewinn (€)</th>
           </tr>
         </thead>
         <tbody>
           ${daten.tabelle.filter((r, i) => i % 5 === 0 || i === daten.tabelle.length - 1).map(row => `
             <tr>
-              <td style="text-align: center;">${row.tag}</td>
-              <td style="text-align: right;">${row.zinssatz}</td>
-              <td style="text-align: right;">${row.kapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
-              <td style="text-align: right;">${row.einsatz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
-              <td style="text-align: right;">${row.gewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
-            </tr>`).join('')}
+              <td style="padding: 6px; text-align: center;">${row.tag}</td>
+              <td style="padding: 6px; text-align: right;">${row.zinssatz}</td>
+              <td style="padding: 6px; text-align: right;">${row.kapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+              <td style="padding: 6px; text-align: right;">${row.einsatz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+              <td style="padding: 6px; text-align: right;">${row.gewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+            </tr>
+          `).join('')}
         </tbody>
       </table>
-      <footer style="margin-top: 40px; font-size: 12px; color: #555; text-align: center;">
-        © 2025 Zinseszins-Rechner – Erstellt am ${new Date().toLocaleDateString('de-DE')}
+
+      <footer style="margin-top: 50px; font-size: 12px; text-align: center; color: #888;">
+        Bericht erstellt am ${new Date().toLocaleDateString('de-DE')}
       </footer>
     </div>
   `;
   return container;
-}
-
-function exportierePDF() {
-  const title = document.getElementById("reportTitle").value || "Kapitalentwicklung";
-  const chartCanvas = document.getElementById("chart");
-  const chartImgURL = chartCanvas.toDataURL();
-
-  if (!window.letztesErgebnis) {
-    alert("Bitte zuerst die Berechnung durchführen.");
-    return;
-  }
-
-  const element = generiereExportTemplate(window.letztesErgebnis, chartImgURL, title);
-
-  html2pdf().set({
-    margin: 0.5,
-    filename: `${title.replace(/\s+/g, "_")}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  }).from(element).save();
 }
