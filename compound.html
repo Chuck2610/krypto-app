@@ -11,26 +11,26 @@
   <div class="container">
     <label for="einsatz">💶 Startkapital (€)</label>
     <input id="einsatz" type="number" placeholder="z. B. 1000" />
-    
+
     <label for="einsatzProzent">📉 Täglicher Einsatz in %</label>
     <input id="einsatzProzent" type="number" placeholder="z. B. 10" />
-    
+
     <label for="tage">📆 Anzahl der Tage</label>
     <input id="tage" type="number" placeholder="z. B. 30" />
-    
+
     <label for="zins">📊 Gewinn auf Einsatz (%)</label>
     <input id="zins" type="number" placeholder="z. B. 10" />
-    
+
     <button onclick="berechne()">🧮 Berechnen</button>
 
     <div id="anzeige">
       <div class="result" id="ergebnis"></div>
-      
+
       <label for="reportTitle" style="margin-top: 20px;">📝 Berichtstitel für PDF</label>
       <input id="reportTitle" type="text" placeholder="z. B. Anlageplan Juli 2025" />
-      
+
       <button onclick="exportierePDF()">📄 PDF-Download</button>
-      
+
       <canvas id="chart"></canvas>
       <div id="entwicklungsliste"></div>
     </div>
@@ -39,8 +39,8 @@
   <footer>© 2025 Zinseszins-Rechner – Alle Rechte vorbehalten.</footer>
 
   <!-- Bibliotheken & Skripte -->
- <script src="js/html2pdf.bundle.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
- <script src="js/rechner.js"></script>
+  <script src="js/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/rechner.js"></script>
 </body>
 </html>
