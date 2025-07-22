@@ -1,80 +1,117 @@
 
 body {
-  font-family: Arial, sans-serif;
-  background: #0f1117;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #0f1117;
   color: #ffffff;
-  padding: 20px;
+  margin: 0;
+  padding: 30px 20px;
 }
+
 h1 {
   text-align: center;
-  font-size: 28px;
+  font-size: 26px;
   margin-bottom: 30px;
+  color: #ffffff;
 }
+
 .container {
-  max-width: 600px;
-  margin: auto;
-  background: #1c1e26;
-  padding: 25px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(0,255,200,0.05);
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #1c1f26;
+  border-radius: 12px;
+  padding: 30px;
+  box-shadow: 0 0 15px rgba(0, 255, 200, 0.1);
 }
+
 label {
   display: block;
   margin-top: 15px;
+  margin-bottom: 5px;
+  color: #cccccc;
   font-size: 15px;
-  color: #ccc;
 }
-input, button {
+
+input, select {
   width: 100%;
-  padding: 10px;
-  margin-top: 5px;
+  padding: 12px;
+  border-radius: 6px;
   border: none;
-  border-radius: 5px;
-  font-size: 16px;
+  background-color: #121212;
+  color: #ffffff;
+  font-size: 15px;
 }
-input {
-  background: #1a1a1a;
-  color: #fff;
-}
+
 button {
-  background: #00ffc3;
-  color: black;
+  width: 100%;
+  margin-top: 20px;
+  padding: 12px;
+  background-color: #00ffc3;
+  color: #000000;
   font-weight: bold;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
+
 button:hover {
-  background: #00c2a9;
+  background-color: #00c2a9;
 }
+
 .result, canvas, table {
   margin-top: 25px;
 }
+
 canvas {
-  background: #fff;
+  background: #ffffff;
   border-radius: 8px;
   padding: 10px;
   width: 100%;
   height: auto;
 }
+
 table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 14px;
+  font-size: 13px;
+  background-color: #1c1f26;
+  color: #ffffff;
+  margin-top: 20px;
 }
+
 th, td {
-  padding: 8px 10px;
-  border-bottom: 1px solid #2e2e2e;
+  padding: 10px;
   text-align: right;
+  border-bottom: 1px solid #2e2e2e;
 }
+
 th {
   background-color: #00ffc3;
-  color: black;
+  color: #000000;
 }
+
 th:first-child, td:first-child {
   text-align: center;
 }
+
 footer {
   margin-top: 40px;
   text-align: center;
   font-size: 14px;
-  color: #aaa;
+  color: #888888;
+}
+
+a {
+  color: #00ffc3;
+  display: inline-block;
+  margin-top: 20px;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
 }
