@@ -204,7 +204,10 @@ function exportiereStilvollenPDF() {
     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
   };
 
-  html2pdf().set(opt).from(element).save();
+  html2pdf().set(opt).from(element).toPdf().get('pdf').then(function (pdf) {
+    const blobUrl = pdf.output('bloburl');
+    window.open(blobUrl); // 👉 öffnet im neuen Tab
+  });
 }
 </script>
 </body>
