@@ -5,8 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zinseszins-Rechner</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -14,14 +12,12 @@
       color: #ffffff;
       padding: 20px;
     }
-
     h1 {
       text-align: center;
       color: #ffffff;
       font-size: 28px;
       margin-bottom: 30px;
     }
-
     .container {
       max-width: 600px;
       margin: auto;
@@ -30,14 +26,12 @@
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0,255,200,0.05);
     }
-
     label {
       display: block;
       margin-top: 15px;
       font-size: 15px;
       color: #ccc;
     }
-
     input {
       width: 100%;
       padding: 10px;
@@ -48,7 +42,6 @@
       color: #fff;
       font-size: 16px;
     }
-
     button {
       margin-top: 20px;
       padding: 12px 20px;
@@ -60,11 +53,9 @@
       border-radius: 6px;
       cursor: pointer;
     }
-
     button:hover {
       background: #00c2a9;
     }
-
     .result {
       margin-top: 25px;
       background: #1a1a1a;
@@ -72,7 +63,6 @@
       border-radius: 5px;
       font-size: 16px;
     }
-
     canvas {
       background: #fff;
       border-radius: 8px;
@@ -81,30 +71,25 @@
       width: 100%;
       height: auto;
     }
-
     table {
       width: 100%;
       margin-top: 30px;
       border-collapse: collapse;
       font-size: 14px;
     }
-
     th, td {
       padding: 8px 10px;
       border-bottom: 1px solid #2e2e2e;
       text-align: right;
     }
-
     th {
       background-color: #00ffc3;
       color: black;
       text-align: center;
     }
-
     td:first-child, th:first-child {
       text-align: center;
     }
-
     .back {
       display: block;
       text-align: center;
@@ -113,78 +98,73 @@
       color: #00ffc3;
       font-size: 15px;
     }
-
     footer {
       margin-top: 40px;
       text-align: center;
       font-size: 14px;
       color: #aaa;
     }
-
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 20px;
-      }
-      .container {
-        padding: 20px;
-      }
-      input, button {
-        font-size: 15px;
-      }
-    }
   </style>
 </head>
 <body>
 
-<h1>📈 Zinseszins-Rechner</h1>
+<h1>📈 Zinseszins-Rechner (Einsatz % + Gewinn %)</h1>
 <div class="container">
-  <label for="einsatz">💶 Einsatz (€)</label>
+  <label for="einsatz">💶 Startkapital (€)</label>
   <input id="einsatz" type="number" placeholder="z. B. 1000"/>
 
-  <label for="tage">📆 Anzahl der Tage</label>
-  <input id="tage" type="number" placeholder="z. B. 365"/>
+  <label for="einsatzProzent">📉 Täglicher Einsatz in %</label>
+  <input id="einsatzProzent" type="number" placeholder="z. B. 10"/>
 
-  <label for="zins">📊 Zinsen pro Tag (%)</label>
-  <input id="zins" type="number" placeholder="z. B. 0.1"/>
+  <label for="tage">📆 Anzahl der Tage</label>
+  <input id="tage" type="number" placeholder="z. B. 30"/>
+
+  <label for="zins">📊 Gewinn auf Einsatz (%)</label>
+  <input id="zins" type="number" placeholder="z. B. 10"/>
 
   <button onclick="berechne()">🧮 Berechnen</button>
-  <button onclick="exportPDF()">⬇️ Tabelle als PDF</button>
 
   <div class="result" id="ergebnis"></div>
   <canvas id="chart"></canvas>
   <div id="entwicklungsliste"></div>
-
-  <a class="back" href="dashboard.html">⬅️ Zurück zum Dashboard</a>
 </div>
 
-<footer>© 2025 Tim Finkbeiner – All rights reserved.</footer>
+<footer>© 2025 Angepasster Rechner – Alle Rechte vorbehalten.</footer>
 
 <script>
 function berechne() {
   const einsatz = parseFloat(document.getElementById('einsatz').value);
+  const einsatzProzent = parseFloat(document.getElementById('einsatzProzent').value);
   const tage = parseInt(document.getElementById('tage').value);
   const zins1 = parseFloat(document.getElementById('zins').value);
 
-  if (!einsatz || !tage || !zins1) {
+  if (!einsatz || !tage || !zins1 || !einsatzProzent) {
     document.getElementById('ergebnis').innerHTML = "<span style='color: #f87171;'>Bitte alle Felder korrekt ausfüllen.</span>";
     return;
   }
 
   const labels = [], werte1 = [], tabelle = [];
   let kapital = einsatz;
+  const p = einsatzProzent / 100;
 
   for (let i = 1; i <= tage; i++) {
-    const vorher = kapital;
-    kapital += kapital * (zins1 / 100);
-    const gewinn = kapital - vorher;
+    const tagesEinsatz = kapital * p;
+    const gewinn = tagesEinsatz * (zins1 / 100);
+    kapital += gewinn;
     werte1.push(kapital.toFixed(2));
     labels.push(i);
-    tabelle.push({ tag: i, zinssatz: zins1.toFixed(2), kapital: kapital, gewinn: gewinn });
+    tabelle.push({
+      tag: i,
+      zinssatz: zins1.toFixed(2),
+      kapital: kapital,
+      einsatz: tagesEinsatz,
+      gewinn: gewinn
+    });
   }
 
   const endbetrag = parseFloat(werte1[werte1.length - 1]);
   document.getElementById("ergebnis").innerHTML =
-    `<strong>📊 Endbetrag nach ${tage} Tagen bei ${zins1}%:</strong> ${endbetrag.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
+    `<strong>📊 Endbetrag nach ${tage} Tagen bei ${zins1}% Gewinn auf ${einsatzProzent}% Einsatz:</strong> ${endbetrag.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
 
   const ctx = document.getElementById('chart').getContext('2d');
   if (window.myChart) window.myChart.destroy();
@@ -193,7 +173,7 @@ function berechne() {
     data: {
       labels,
       datasets: [
-        { label: `${zins1}%`, data: werte1, borderColor: '#00e6b8', fill: false }
+        { label: `Kapitalentwicklung`, data: werte1, borderColor: '#00e6b8', fill: false }
       ]
     },
     options: {
@@ -203,7 +183,7 @@ function berechne() {
         tooltip: {
           callbacks: {
             label: function(context) {
-              return `${context.dataset.label}: ${parseFloat(context.raw).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
+              return `Kapital: ${parseFloat(context.raw).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
             }
           }
         }
@@ -212,36 +192,18 @@ function berechne() {
     }
   });
 
-  let tableHTML = "<table id='resultTable'><thead><tr><th>Tag</th><th>Zinssatz %</th><th>Kapital (€)</th><th>Täglicher Gewinn (€)</th></tr></thead><tbody>";
+  let tableHTML = "<table id='resultTable'><thead><tr><th>Tag</th><th>Zinssatz %</th><th>Kapital (€)</th><th>Einsatz (€)</th><th>Täglicher Gewinn (€)</th></tr></thead><tbody>";
   tabelle.forEach(row => {
     tableHTML += `<tr>
       <td>${row.tag}</td>
       <td>${row.zinssatz}</td>
-      <td>${parseFloat(row.kapital).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
-      <td>${parseFloat(row.gewinn).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+      <td>${row.kapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+      <td>${row.einsatz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
+      <td>${row.gewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td>
     </tr>`;
   });
   tableHTML += "</tbody></table>";
   document.getElementById("entwicklungsliste").innerHTML = tableHTML;
-}
-
-function exportPDF() {
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const rows = [];
-  const table = document.querySelectorAll("#resultTable tbody tr");
-  table.forEach(tr => {
-    const cells = tr.querySelectorAll("td");
-    rows.push(Array.from(cells).map(td => td.textContent));
-  });
-  doc.text("Zinseszins-Tabelle", 14, 14);
-  doc.autoTable({
-    startY: 20,
-    head: [['Tag', 'Zinssatz %', 'Kapital (€)', 'Täglicher Gewinn (€)']],
-    body: rows,
-    theme: 'grid'
-  });
-  doc.save("zinseszins_tabelle.pdf");
 }
 </script>
 
