@@ -1,3 +1,4 @@
+
 function berechne() {
   const einsatz = parseFloat(document.getElementById('einsatz').value);
   const tage = parseInt(document.getElementById('tage').value);
