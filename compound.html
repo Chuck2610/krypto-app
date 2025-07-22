@@ -4,7 +4,7 @@
   <meta charset="utf-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Zinseszins-Rechner</title>
-  <script src="js/html2pdf.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     body {
@@ -100,6 +100,7 @@
     <label for="zins">📊 Gewinn auf Einsatz (%)</label>
     <input id="zins" type="number" placeholder="z. B. 10"/>
     <button onclick="berechne()">🧮 Berechnen</button>
+
     <div id="pdfbereich">
       <div class="result" id="ergebnis"></div>
       <label for="reportTitle" style="margin-top: 20px;">📝 Berichtstitel für PDF</label>
@@ -185,19 +186,16 @@ function berechne() {
 function exportierePDF() {
   const title = document.getElementById("reportTitle").value || "Kapitalentwicklung";
 
-  const clone = document.createElement("div");
+  const element = document.getElementById("pdfbereich").cloneNode(true);
 
-  const summary = document.getElementById("ergebnis").cloneNode(true);
-  const table = document.getElementById("entwicklungsliste").cloneNode(true);
-  const chartCanvas = document.getElementById('chart');
+  const chartCanvas = document.getElementById("chart");
   const chartImg = new Image();
   chartImg.src = chartCanvas.toDataURL();
   chartImg.style.width = "100%";
   chartImg.style.marginTop = "20px";
 
-  clone.appendChild(summary);
-  clone.appendChild(chartImg);
-  clone.appendChild(table);
+  const canvasOld = element.querySelector("canvas");
+  if (canvasOld) canvasOld.replaceWith(chartImg);
 
   html2pdf().set({
     margin: 0.5,
@@ -205,7 +203,7 @@ function exportierePDF() {
     image: { type: 'jpeg', quality: 0.98 },
     html2canvas: { scale: 2 },
     jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  }).from(clone).save();
+  }).from(element).save();
 }
 </script>
 </body>
