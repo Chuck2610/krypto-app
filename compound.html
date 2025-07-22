@@ -1,210 +1,46 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-  <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Zinseszins-Rechner</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #0f1117;
-      color: #ffffff;
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      font-size: 28px;
-      margin-bottom: 30px;
-    }
-    .container {
-      max-width: 600px;
-      margin: auto;
-      background: #1c1e26;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,255,200,0.05);
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-size: 15px;
-      color: #ccc;
-    }
-    input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: none;
-      border-radius: 5px;
-      font-size: 16px;
-    }
-    input {
-      background: #1a1a1a;
-      color: #fff;
-    }
-    button {
-      background: #00ffc3;
-      color: black;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    button:hover {
-      background: #00c2a9;
-    }
-    .result, canvas, table {
-      margin-top: 25px;
-    }
-    canvas {
-      background: #fff;
-      border-radius: 8px;
-      padding: 10px;
-      width: 100%;
-      height: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    th, td {
-      padding: 8px 10px;
-      border-bottom: 1px solid #2e2e2e;
-      text-align: right;
-    }
-    th {
-      background-color: #00ffc3;
-      color: black;
-    }
-    th:first-child, td:first-child {
-      text-align: center;
-    }
-    footer {
-      margin-top: 40px;
-      text-align: center;
-      font-size: 14px;
-      color: #aaa;
-    }
-  </style>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
   <h1>📈 Zinseszins-Rechner (10 % Einsatz, x % Gewinn)</h1>
   <div class="container">
     <label for="einsatz">💶 Startkapital (€)</label>
-    <input id="einsatz" type="number" placeholder="z. B. 1000"/>
+    <input id="einsatz" type="number" placeholder="z. B. 1000" />
+    
     <label for="einsatzProzent">📉 Täglicher Einsatz in %</label>
-    <input id="einsatzProzent" type="number" placeholder="z. B. 10"/>
+    <input id="einsatzProzent" type="number" placeholder="z. B. 10" />
+    
     <label for="tage">📆 Anzahl der Tage</label>
-    <input id="tage" type="number" placeholder="z. B. 30"/>
+    <input id="tage" type="number" placeholder="z. B. 30" />
+    
     <label for="zins">📊 Gewinn auf Einsatz (%)</label>
-    <input id="zins" type="number" placeholder="z. B. 10"/>
+    <input id="zins" type="number" placeholder="z. B. 10" />
+    
     <button onclick="berechne()">🧮 Berechnen</button>
 
-    <div id="pdfbereich">
+    <div id="anzeige">
       <div class="result" id="ergebnis"></div>
+      
       <label for="reportTitle" style="margin-top: 20px;">📝 Berichtstitel für PDF</label>
-      <input id="reportTitle" type="text" placeholder="z. B. Anlageplan Juli 2025"/>
+      <input id="reportTitle" type="text" placeholder="z. B. Anlageplan Juli 2025" />
+      
       <button onclick="exportierePDF()">📄 PDF-Download</button>
+      
       <canvas id="chart"></canvas>
       <div id="entwicklungsliste"></div>
     </div>
   </div>
-  <footer>© 2025 Angepasster Rechner – Alle Rechte vorbehalten.</footer>
 
-<script>
-function berechne() {
-  const einsatz = parseFloat(document.getElementById('einsatz').value);
-  const tage = parseInt(document.getElementById('tage').value);
-  const zins1 = parseFloat(document.getElementById('zins').value);
-  const p = parseFloat(document.getElementById("einsatzProzent").value) / 100;
+  <footer>© 2025 Zinseszins-Rechner – Alle Rechte vorbehalten.</footer>
 
-  if (!einsatz || !tage || !zins1 || !p) {
-    document.getElementById('ergebnis').innerHTML = "<span style='color: #f87171;'>Bitte alle Felder korrekt ausfüllen.</span>";
-    return;
-  }
-
-  const labels = [], werte1 = [], tabelle = [];
-  let kapital = einsatz;
-
-  for (let i = 0; i <= tage; i++) {
-    const einsatzBetrag = kapital * p;
-    const gewinn = einsatzBetrag * (zins1 / 100);
-    const kapitalNeu = kapital + gewinn;
-
-    werte1.push(kapital.toFixed(2));
-    labels.push(i);
-
-    tabelle.push({
-      tag: i,
-      zinssatz: zins1.toFixed(2),
-      kapital: kapital,
-      einsatz: einsatzBetrag,
-      gewinn: gewinn
-    });
-
-    kapital = kapitalNeu;
-  }
-
-  const endbetrag = kapital;
-  const reingewinn = endbetrag - einsatz;
-
-  document.getElementById("ergebnis").innerHTML =
-    `<strong>📊 Endbetrag nach ${tage} Tagen bei ${zins1}% Gewinn auf ${p * 100} % Einsatz:</strong> ${endbetrag.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}<br/>
-     <strong>💰 Reingewinn:</strong> ${reingewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`;
-
-  const ctx = document.getElementById('chart').getContext('2d');
-  if (window.myChart) window.myChart.destroy();
-  window.myChart = new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{ label: `Kapitalentwicklung`, data: werte1, borderColor: '#00e6b8', fill: false }]
-    },
-    options: {
-      responsive: true,
-      plugins: {
-        legend: { position: 'top' },
-        tooltip: {
-          callbacks: {
-            label: ctx => `Kapital: ${parseFloat(ctx.raw).toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}`
-          }
-        }
-      },
-      scales: { y: { beginAtZero: false } }
-    }
-  });
-
-  let tableHTML = "<table><thead><tr><th>Tag</th><th>Zinssatz %</th><th>Kapital (€)</th><th>Einsatz (€)</th><th>Gewinn (€)</th></tr></thead><tbody>";
-  tabelle.forEach(row => {
-    tableHTML += `<tr><td>${row.tag}</td><td>${row.zinssatz}</td><td>${row.kapital.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td><td>${row.einsatz.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td><td>${row.gewinn.toLocaleString('de-DE', { style: 'currency', currency: 'EUR' })}</td></tr>`;
-  });
-  tableHTML += "</tbody></table>";
-  document.getElementById("entwicklungsliste").innerHTML = tableHTML;
-}
-
-function exportierePDF() {
-  const title = document.getElementById("reportTitle").value || "Kapitalentwicklung";
-
-  const element = document.getElementById("pdfbereich").cloneNode(true);
-
-  const chartCanvas = document.getElementById("chart");
-  const chartImg = new Image();
-  chartImg.src = chartCanvas.toDataURL();
-  chartImg.style.width = "100%";
-  chartImg.style.marginTop = "20px";
-
-  const canvasOld = element.querySelector("canvas");
-  if (canvasOld) canvasOld.replaceWith(chartImg);
-
-  html2pdf().set({
-    margin: 0.5,
-    filename: `${title.replace(/\s+/g, "_")}.pdf`,
-    image: { type: 'jpeg', quality: 0.98 },
-    html2canvas: { scale: 2 },
-    jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
-  }).from(element).save();
-}
-</script>
+  <!-- Bibliotheken & Skripte -->
+  <script src="js/html2pdf.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="js/app.js"></script>
 </body>
 </html>
